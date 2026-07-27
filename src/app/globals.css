@@ -152,6 +152,19 @@ select {
   }
 }
 
+/* Events rail — mobile GSAP drag affordance */
+.pme-events-pin.is-dragging {
+  cursor: grabbing;
+}
+@media (max-width: 900px) {
+  .pme-events-pin {
+    touch-action: pan-y;
+  }
+  .pme-events-pin .pme-events-track {
+    touch-action: none;
+  }
+}
+
 .pme-scrollbar-hide {
   scrollbar-width: none;
   -ms-overflow-style: none;

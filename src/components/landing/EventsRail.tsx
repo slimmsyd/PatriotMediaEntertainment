@@ -3,12 +3,13 @@
 import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Draggable } from "gsap/Draggable";
 import { useGSAP } from "@gsap/react";
 import { events } from "@/lib/content";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { InViewVideo } from "@/components/ui/InViewVideo";
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+gsap.registerPlugin(ScrollTrigger, Draggable, useGSAP);
 
 export function EventsRail() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -24,6 +25,7 @@ export function EventsRail() {
 
       const mm = gsap.matchMedia();
 
+      // Desktop: scroll-scrubbed horizontal pin
       mm.add(
         "(min-width: 901px) and (prefers-reduced-motion: no-preference)",
         () => {
@@ -70,10 +72,112 @@ export function EventsRail() {
         },
       );
 
-      mm.add("(max-width: 900px), (prefers-reduced-motion: reduce)", () => {
-        gsap.set(track, { clearProps: "transform" });
-        gsap.set(pin, { clearProps: "transform,opacity" });
-      });
+      // Mobile / reduced motion: free GSAP drag (press + drag left/right)
+      mm.add(
+        "(max-width: 900px), (prefers-reduced-motion: reduce)",
+        () => {
+          gsap.set(pin, { clearProps: "transform,opacity" });
+          gsap.set(track, { x: 0 });
+
+          const getMinX = () => {
+            const maxScroll = Math.max(0, track.scrollWidth - pin.clientWidth);
+            return -maxScroll;
+          };
+
+          let lastX = 0;
+          let lastT = 0;
+          let velocity = 0;
+          let throwTween: gsap.core.Tween | null = null;
+
+          const clampX = (x: number) =>
+            gsap.utils.clamp(getMinX(), 0, x);
+
+          const [drag] = Draggable.create(track, {
+            type: "x",
+            trigger: pin,
+            bounds: { minX: getMinX(), maxX: 0 },
+            edgeResistance: 0.82,
+            dragClickables: true,
+            allowContextMenu: false,
+            zIndexBoost: false,
+            cursor: "grab",
+            activeCursor: "grabbing",
+            onPress() {
+              throwTween?.kill();
+              throwTween = null;
+              lastX = this.x;
+              lastT = performance.now();
+              velocity = 0;
+              pin.classList.add("is-dragging");
+              // Refresh bounds in case layout/videos changed
+              this.applyBounds({ minX: getMinX(), maxX: 0 });
+            },
+            onDrag() {
+              const now = performance.now();
+              const dt = Math.max(1, now - lastT);
+              // px / ms → px / s
+              velocity = ((this.x - lastX) / dt) * 1000;
+              lastX = this.x;
+              lastT = now;
+            },
+            onRelease() {
+              pin.classList.remove("is-dragging");
+            },
+            onDragEnd() {
+              pin.classList.remove("is-dragging");
+
+              // Throw / inertia without Club InertiaPlugin
+              const projected = clampX(this.x + velocity * 0.35);
+              const dist = Math.abs(projected - this.x);
+              if (dist < 4) {
+                // Nudge into bounds if released past edge
+                gsap.to(track, {
+                  x: clampX(this.x),
+                  duration: 0.35,
+                  ease: "power2.out",
+                  overwrite: true,
+                });
+                return;
+              }
+
+              const duration = gsap.utils.clamp(0.35, 1.1, dist / 900);
+              throwTween = gsap.to(track, {
+                x: projected,
+                duration,
+                ease: "power3.out",
+                overwrite: true,
+                onUpdate: () => {
+                  // Keep Draggable's internal x in sync for next press
+                  drag.update();
+                },
+              });
+            },
+          });
+
+          const onResize = () => {
+            const minX = getMinX();
+            const x = clampX(Number(gsap.getProperty(track, "x")) || 0);
+            gsap.set(track, { x });
+            drag.applyBounds({ minX, maxX: 0 });
+            drag.update(true);
+          };
+
+          window.addEventListener("resize", onResize);
+          // Layout after videos/fonts
+          const t1 = window.setTimeout(onResize, 200);
+          const t2 = window.setTimeout(onResize, 800);
+
+          return () => {
+            window.clearTimeout(t1);
+            window.clearTimeout(t2);
+            window.removeEventListener("resize", onResize);
+            throwTween?.kill();
+            pin.classList.remove("is-dragging");
+            drag.kill();
+            gsap.set(track, { clearProps: "transform,cursor" });
+          };
+        },
+      );
 
       return () => mm.revert();
     },
@@ -89,11 +193,11 @@ export function EventsRail() {
     >
       <div
         ref={pinRef}
-        className="flex h-screen items-center overflow-hidden bg-black will-change-transform max-[900px]:h-auto max-[900px]:py-16"
+        className="pme-events-pin flex h-screen items-center overflow-hidden bg-black will-change-transform max-[900px]:h-auto max-[900px]:py-16 max-[900px]:cursor-grab max-[900px]:select-none max-[900px]:active:cursor-grabbing"
       >
         <div
           ref={trackRef}
-          className="flex gap-[clamp(24px,3vw,56px)] px-[clamp(24px,4vw,72px)] will-change-transform max-[900px]:w-full max-[900px]:overflow-x-auto max-[900px]:scroll-smooth max-[900px]:snap-x max-[900px]:snap-mandatory pme-scrollbar-hide"
+          className="pme-events-track flex gap-[clamp(24px,3vw,56px)] px-[clamp(24px,4vw,72px)] will-change-transform max-[900px]:w-max"
         >
           {events.map((event) => {
             const videoSrc = "video" in event ? event.video : undefined;
@@ -105,11 +209,10 @@ export function EventsRail() {
             return (
               <article
                 key={event.id}
-                className="relative h-[82vh] w-[min(72vw,1180px)] shrink-0 overflow-hidden rounded-[26px] bg-card-well max-[900px]:h-[70vh] max-[900px]:w-[86vw] max-[900px]:snap-center"
+                className="relative h-[82vh] w-[min(72vw,1180px)] shrink-0 overflow-hidden rounded-[26px] bg-card-well max-[900px]:h-[70vh] max-[900px]:w-[86vw]"
               >
                 {videoSrc ? (
                   <>
-                    {/* Poster / solid fill while media buffers */}
                     <div
                       className="absolute inset-0 bg-card-well bg-cover bg-center"
                       style={
@@ -122,7 +225,7 @@ export function EventsRail() {
                     <InViewVideo
                       src={videoSrc}
                       poster={poster}
-                      className="absolute inset-0 h-full w-full object-cover"
+                      className="pointer-events-none absolute inset-0 h-full w-full object-cover max-[900px]:pointer-events-none"
                       aria-label={event.title}
                       loadRootMargin="160% 0px 160% 0px"
                     />
