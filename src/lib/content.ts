@@ -110,14 +110,11 @@ export const footerColumns = {
   shows: [
     { label: "Upcoming Events", href: "/#upcoming" },
     { label: "Past Events", href: "/#events" },
-    { label: "Tickets", href: "/#upcoming" },
     { label: "Venues", href: "/#upcoming" },
   ],
   company: [
     { label: "About Us", href: "/#about" },
     { label: "Merch", href: "/#merch" },
-    { label: "Press", href: "/#about" },
-    { label: "Careers", href: "/#about" },
   ],
   connect: [
     { label: "Contact", href: "/contact" },

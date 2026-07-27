@@ -60,18 +60,18 @@ export function SiteFooter() {
               target="_blank"
               rel="noreferrer"
               aria-label="Instagram"
-              className="inline-flex h-[54px] w-[54px] items-center justify-center rounded-[10px] bg-near-black text-white transition-colors duration-200 hover:bg-red pme-focus-ring"
+              className="inline-flex h-[54px] w-[54px] items-center justify-center rounded-[10px] bg-near-black text-white transition-colors duration-200 hover:bg-red hover:text-white pme-focus-ring"
             >
-              <InstagramIcon />
+              <InstagramIcon className="h-[22px] w-[22px] shrink-0 text-white" />
             </a>
             <a
               href="https://youtube.com"
               target="_blank"
               rel="noreferrer"
               aria-label="YouTube"
-              className="inline-flex h-[54px] w-[54px] items-center justify-center rounded-[10px] bg-near-black text-white transition-colors duration-200 hover:bg-red pme-focus-ring"
+              className="inline-flex h-[54px] w-[54px] items-center justify-center rounded-[10px] bg-near-black text-white transition-colors duration-200 hover:bg-red hover:text-white pme-focus-ring"
             >
-              <YouTubeIcon />
+              <YouTubeIcon className="h-[22px] w-[22px] shrink-0 text-white" />
             </a>
           </div>
         </div>
