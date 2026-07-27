@@ -4,18 +4,79 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import { SITE_BG_VIDEO } from "@/lib/media";
+import { SpeakerIcon } from "@/components/ui/icons";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const HOLD_MS = 1400;
 
-export function Hero() {
+type HeroProps = {
+  /** Resume playback from loader so audio continues seamlessly. */
+  startAt?: number;
+  soundOn?: boolean;
+  /** When false (during loader), hero video stays paused so audio isn't doubled. */
+  active?: boolean;
+};
+
+export function Hero({
+  startAt = 0,
+  soundOn = true,
+  active = true,
+}: HeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const holdBarRef = useRef<HTMLDivElement>(null);
   const [holding, setHolding] = useState(false);
   const [holdComplete, setHoldComplete] = useState(false);
+  const [muted, setMuted] = useState(!soundOn);
   const holdTween = useRef<gsap.core.Tween | null>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (!active) {
+      video.pause();
+      return;
+    }
+
+    video.muted = muted;
+    video.defaultMuted = muted;
+    video.volume = 1;
+
+    const applyAndPlay = async () => {
+      try {
+        if (startAt > 0 && Number.isFinite(startAt)) {
+          video.currentTime = startAt;
+        }
+        video.muted = muted;
+        await video.play();
+      } catch {
+        const unlock = () => {
+          video.muted = muted;
+          video.volume = 1;
+          void video.play().catch(() => undefined);
+          window.removeEventListener("pointerdown", unlock);
+          window.removeEventListener("keydown", unlock);
+        };
+        window.addEventListener("pointerdown", unlock, { once: true });
+        window.addEventListener("keydown", unlock, { once: true });
+      }
+    };
+
+    void applyAndPlay();
+  }, [startAt, active, muted]);
+
+  const toggleMute = () => {
+    setMuted((m) => {
+      const next = !m;
+      if (videoRef.current) {
+        videoRef.current.muted = next;
+      }
+      return next;
+    });
+  };
 
   useGSAP(
     () => {
@@ -47,6 +108,9 @@ export function Hero() {
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.code !== "Space" || e.repeat) return;
+      // Don't steal space when focused on a button/input
+      const tag = (e.target as HTMLElement | null)?.tagName;
+      if (tag === "BUTTON" || tag === "INPUT" || tag === "TEXTAREA") return;
       e.preventDefault();
       if (holdComplete) return;
       setHolding(true);
@@ -88,11 +152,16 @@ export function Hero() {
     >
       <div className="h-[11vh] min-h-16 shrink-0" />
 
-      <div className="relative min-h-0 flex-1 overflow-hidden">
-        <ImagePlaceholder
-          id="hero-media"
-          label="Drop the hero film still / video frame"
-          className="bg-card-well"
+      <div className="relative min-h-0 flex-1 overflow-hidden bg-card-well">
+        <video
+          ref={videoRef}
+          className="absolute inset-0 h-full w-full object-cover"
+          src={SITE_BG_VIDEO}
+          loop
+          playsInline
+          preload="auto"
+          muted={muted}
+          aria-label="Hero background video"
         />
         <div
           className="pointer-events-none absolute inset-0"
@@ -110,6 +179,17 @@ export function Hero() {
               "linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 35%, rgba(0,0,0,0.45) 100%)",
           }}
         />
+
+        {/* Mute / unmute control */}
+        <button
+          type="button"
+          onClick={toggleMute}
+          aria-label={muted ? "Unmute video" : "Mute video"}
+          aria-pressed={muted}
+          className="absolute right-[clamp(24px,3vw,52px)] top-[clamp(20px,4vh,40px)] z-10 flex h-16 w-16 cursor-pointer items-center justify-center rounded-full bg-white text-black transition-colors duration-200 hover:bg-red hover:text-white pme-focus-ring"
+        >
+          <SpeakerIcon muted={muted} />
+        </button>
 
         <p
           className="pointer-events-none absolute right-[clamp(24px,6vw,110px)] bottom-[clamp(28px,6vh,64px)] m-0 text-[15px] font-semibold tracking-[0.14em] text-white uppercase"

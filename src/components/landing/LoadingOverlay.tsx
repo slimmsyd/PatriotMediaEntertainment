@@ -1,28 +1,69 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { site } from "@/lib/content";
+import { LOADER_BG_VIDEO, SITE_BG_VIDEO } from "@/lib/media";
 
 gsap.registerPlugin(useGSAP);
 
 const WORDMARK = site.wordmark;
-const DURATION = 5;
-const CHAR_MS = 85;
-const START_DELAY = 0.5;
+const DURATION = 1.5;
+const START_DELAY = 0.2;
+const TYPE_DURATION = Math.max(0.4, DURATION - START_DELAY);
 
 type LoadingOverlayProps = {
-  onComplete?: () => void;
+  /** Called with hero video time so playback continues into the hero. */
+  onComplete?: (currentTime: number) => void;
+  /** Called after the overlay has fully faded out. */
+  onGone?: () => void;
 };
 
-export function LoadingOverlay({ onComplete }: LoadingOverlayProps) {
+export function LoadingOverlay({ onComplete, onGone }: LoadingOverlayProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
+  const loaderVideoRef = useRef<HTMLVideoElement>(null);
+  /** Hidden hero track — audio starts under the loader visual. */
+  const audioVideoRef = useRef<HTMLVideoElement>(null);
   const [typed, setTyped] = useState("");
   const [done, setDone] = useState(false);
   const [hidden, setHidden] = useState(false);
+
+  // Loader visual loops muted; hero audio starts immediately
+  useEffect(() => {
+    const visual = loaderVideoRef.current;
+    if (visual) {
+      visual.muted = true;
+      void visual.play().catch(() => undefined);
+    }
+
+    const audio = audioVideoRef.current;
+    if (!audio) return;
+
+    audio.muted = false;
+    audio.defaultMuted = false;
+    audio.volume = 1;
+
+    const tryPlay = async () => {
+      try {
+        audio.muted = false;
+        await audio.play();
+      } catch {
+        const unlock = () => {
+          audio.muted = false;
+          audio.volume = 1;
+          void audio.play().catch(() => undefined);
+          window.removeEventListener("pointerdown", unlock);
+          window.removeEventListener("keydown", unlock);
+        };
+        window.addEventListener("pointerdown", unlock, { once: true });
+        window.addEventListener("keydown", unlock, { once: true });
+      }
+    };
+
+    void tryPlay();
+  }, []);
 
   useGSAP(
     () => {
@@ -30,46 +71,46 @@ export function LoadingOverlay({ onComplete }: LoadingOverlayProps) {
         typeof window !== "undefined" &&
         window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      if (reduce) {
-        setTyped(WORDMARK);
-        if (barRef.current) gsap.set(barRef.current, { scaleX: 1 });
+      const finish = () => {
+        const t = audioVideoRef.current?.currentTime ?? 0;
+        if (audioVideoRef.current) {
+          audioVideoRef.current.muted = true;
+          audioVideoRef.current.pause();
+        }
+        if (loaderVideoRef.current) {
+          loaderVideoRef.current.pause();
+        }
+        onComplete?.(t);
         gsap.to(rootRef.current, {
           autoAlpha: 0,
-          duration: 0.6,
-          delay: 0.4,
+          duration: reduce ? 0.6 : 1.1,
+          delay: reduce ? 0.4 : 0,
           ease: "power1.inOut",
           onComplete: () => {
             setDone(true);
             setHidden(true);
-            onComplete?.();
+            onGone?.();
           },
         });
+      };
+
+      if (reduce) {
+        setTyped(WORDMARK);
+        if (barRef.current) gsap.set(barRef.current, { scaleX: 1 });
+        finish();
         return;
       }
 
       const progress = { p: 0 };
       const charState = { n: 0 };
 
-      const tl = gsap.timeline({
-        onComplete: () => {
-          gsap.to(rootRef.current, {
-            autoAlpha: 0,
-            duration: 1.1,
-            ease: "power1.inOut",
-            onComplete: () => {
-              setDone(true);
-              setHidden(true);
-              onComplete?.();
-            },
-          });
-        },
-      });
+      const tl = gsap.timeline({ onComplete: finish });
 
       tl.to(
         charState,
         {
           n: WORDMARK.length,
-          duration: (WORDMARK.length * CHAR_MS) / 1000,
+          duration: TYPE_DURATION,
           delay: START_DELAY,
           ease: "none",
           onUpdate: () => setTyped(WORDMARK.slice(0, Math.floor(charState.n))),
@@ -116,13 +157,17 @@ export function LoadingOverlay({ onComplete }: LoadingOverlayProps) {
       aria-busy={!done}
       aria-live="polite"
     >
-      <Image
-        src="/images/loader-flag.jpg"
-        alt=""
-        fill
-        priority
-        className="object-cover opacity-[0.22]"
-        sizes="100vw"
+      {/* LOOPVIDEOBG — loading visual differentiator */}
+      <video
+        ref={loaderVideoRef}
+        className="absolute inset-0 h-full w-full object-cover opacity-[0.22]"
+        src={LOADER_BG_VIDEO}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
       />
       <div
         className="absolute inset-0"
@@ -131,6 +176,21 @@ export function LoadingOverlay({ onComplete }: LoadingOverlayProps) {
             "radial-gradient(60% 55% at 50% 52%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.82) 60%, #000000 100%)",
         }}
       />
+
+      {/* Hero audio starts under the loader (not shown) */}
+      <video
+        ref={audioVideoRef}
+        className="pointer-events-none absolute h-px w-px opacity-0"
+        src={SITE_BG_VIDEO}
+        autoPlay
+        loop
+        playsInline
+        preload="auto"
+        muted={false}
+        aria-hidden="true"
+        tabIndex={-1}
+      />
+
       <p className="relative m-0 max-w-[1100px] text-center text-[19px] font-bold leading-[1.5] tracking-[0.16em] text-white uppercase text-pretty">
         {typed}
         <span
