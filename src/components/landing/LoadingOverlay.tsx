@@ -160,7 +160,7 @@ export function LoadingOverlay({ onComplete, onGone }: LoadingOverlayProps) {
       {/* LOOPVIDEOBG — loading visual differentiator */}
       <video
         ref={loaderVideoRef}
-        className="absolute inset-0 h-full w-full object-cover opacity-[0.22]"
+        className="absolute inset-0 h-full w-full object-cover opacity-[0.45]"
         src={LOADER_BG_VIDEO}
         autoPlay
         muted
@@ -173,7 +173,7 @@ export function LoadingOverlay({ onComplete, onGone }: LoadingOverlayProps) {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(60% 55% at 50% 52%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.82) 60%, #000000 100%)",
+            "radial-gradient(60% 55% at 50% 52%, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.78) 100%)",
         }}
       />
 

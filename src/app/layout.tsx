@@ -16,6 +16,33 @@ export const metadata: Metadata = {
   },
   description:
     "Live events and film production. Patriot Media Entertainment builds shows and stories around the people and places that shape this country.",
+  icons: {
+    icon: [
+      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "/images/monogram-p.png", sizes: "1024x1024", type: "image/png" },
+    ],
+    apple: [{ url: "/images/apple-touch-icon.png", sizes: "180x180" }],
+  },
+  openGraph: {
+    title: "Patriot Media Entertainment",
+    description:
+      "Live events and film production. Patriot Media Entertainment builds shows and stories around the people and places that shape this country.",
+    images: [
+      {
+        url: "/images/og-brand.jpg",
+        width: 1968,
+        height: 528,
+        alt: "Patriot Media Entertainment",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Patriot Media Entertainment",
+    description:
+      "Live events and film production. Patriot Media Entertainment builds shows and stories around the people and places that shape this country.",
+    images: ["/images/og-brand.jpg"],
+  },
 };
 
 export default function RootLayout({

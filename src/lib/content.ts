@@ -19,9 +19,10 @@ export const navLinks = [
 export const events = [
   {
     id: "event-1",
-    title: "Event Title One",
-    eyebrow: "Previous event",
+    title: "Heal the World",
+    eyebrow: "Live in Munich",
     placeholder: "Drop event 1 film / photo",
+    video: "/videos/event-1.mp4",
   },
   {
     id: "event-2",

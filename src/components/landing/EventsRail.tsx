@@ -1,12 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { events } from "@/lib/content";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
-import { SpeakerIcon } from "@/components/ui/icons";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -14,7 +13,6 @@ export function EventsRail() {
   const sectionRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const [muted, setMuted] = useState(true);
 
   useGSAP(
     () => {
@@ -96,45 +94,51 @@ export function EventsRail() {
           ref={trackRef}
           className="flex gap-[clamp(24px,3vw,56px)] px-[clamp(24px,4vw,72px)] will-change-transform max-[900px]:w-full max-[900px]:overflow-x-auto max-[900px]:scroll-smooth max-[900px]:snap-x max-[900px]:snap-mandatory pme-scrollbar-hide"
         >
-          {events.map((event, index) => (
-            <article
-              key={event.id}
-              className="relative h-[82vh] w-[min(72vw,1180px)] shrink-0 overflow-hidden rounded-[26px] bg-card-well max-[900px]:h-[70vh] max-[900px]:w-[86vw] max-[900px]:snap-center"
-            >
-              <ImagePlaceholder
-                id={event.id}
-                label={event.placeholder}
-                rounded="rounded-[26px]"
-                className="bg-card-well"
-              />
-              <div
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.72) 100%)",
-                }}
-              />
-              <div className="pointer-events-none absolute bottom-[clamp(28px,4vh,54px)] left-[clamp(24px,3vw,52px)] flex flex-col gap-1.5 text-white">
-                <span className="text-[15px] font-bold tracking-[0.04em]">
-                  {event.eyebrow}
-                </span>
-                <h2 className="m-0 text-[clamp(38px,4.6vw,84px)] font-extrabold leading-[0.94] tracking-[-0.02em] text-pretty">
-                  {event.title}
-                </h2>
-              </div>
-              {index === 0 && (
-                <button
-                  type="button"
-                  aria-label={muted ? "Unmute" : "Mute"}
-                  aria-pressed={!muted}
-                  onClick={() => setMuted((m) => !m)}
-                  className="absolute right-[clamp(24px,3vw,52px)] bottom-[clamp(28px,4vh,54px)] flex h-16 w-16 cursor-pointer items-center justify-center rounded-full bg-white text-black transition-colors duration-200 hover:bg-red hover:text-white pme-focus-ring"
-                >
-                  <SpeakerIcon muted={muted} />
-                </button>
-              )}
-            </article>
-          ))}
+          {events.map((event) => {
+            const videoSrc = "video" in event ? event.video : undefined;
+
+            return (
+              <article
+                key={event.id}
+                className="relative h-[82vh] w-[min(72vw,1180px)] shrink-0 overflow-hidden rounded-[26px] bg-card-well max-[900px]:h-[70vh] max-[900px]:w-[86vw] max-[900px]:snap-center"
+              >
+                {videoSrc ? (
+                  <video
+                    className="absolute inset-0 h-full w-full object-cover"
+                    src={videoSrc}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-label={event.title}
+                  />
+                ) : (
+                  <ImagePlaceholder
+                    id={event.id}
+                    label={event.placeholder}
+                    rounded="rounded-[26px]"
+                    className="bg-card-well"
+                  />
+                )}
+                <div
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.72) 100%)",
+                  }}
+                />
+                <div className="pointer-events-none absolute bottom-[clamp(28px,4vh,54px)] left-[clamp(24px,3vw,52px)] flex flex-col gap-1.5 text-white">
+                  <span className="text-[15px] font-bold tracking-[0.04em]">
+                    {event.eyebrow}
+                  </span>
+                  <h2 className="m-0 text-[clamp(38px,4.6vw,84px)] font-extrabold leading-[0.94] tracking-[-0.02em] text-pretty">
+                    {event.title}
+                  </h2>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
