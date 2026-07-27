@@ -5,16 +5,18 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { ctaCopy } from "@/lib/content";
+import { ctaCopy, partnerLogos } from "@/lib/content";
+import { FLAG_BG_VIDEO, FLAG_POSTER } from "@/lib/media";
 import { ChevronRightIcon } from "@/components/ui/icons";
 import { TricolorBar } from "@/components/ui/TricolorBar";
+import { InViewVideo } from "@/components/ui/InViewVideo";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export function CtaCard() {
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  const avatarsRef = useRef<HTMLDivElement>(null);
+  const logosRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const charsRef = useRef<HTMLSpanElement>(null);
   const chipRef = useRef<HTMLSpanElement>(null);
@@ -33,7 +35,7 @@ export function CtaCard() {
           start: "top bottom",
           end: "bottom top",
           scrub: true,
-          onUpdate: (self) => {
+          onUpdate: () => {
             const vh = window.innerHeight;
             const rect = card.getBoundingClientRect();
             const p = gsap.utils.clamp(
@@ -56,7 +58,7 @@ export function CtaCard() {
         if (reduce) {
           gsap.set(
             [
-              avatarsRef.current?.children,
+              logosRef.current?.children,
               headlineRef.current,
               charsRef.current?.children,
               chipRef.current,
@@ -67,15 +69,15 @@ export function CtaCard() {
         }
 
         const tl = gsap.timeline();
-        const avatars = avatarsRef.current
-          ? Array.from(avatarsRef.current.children)
+        const logos = logosRef.current
+          ? Array.from(logosRef.current.children)
           : [];
         const chars = charsRef.current
           ? Array.from(charsRef.current.children)
           : [];
 
         tl.fromTo(
-          avatars,
+          logos,
           { y: 30, scale: 0.88, opacity: 0 },
           {
             y: 0,
@@ -135,25 +137,57 @@ export function CtaCard() {
         className="relative flex flex-col items-center gap-[clamp(34px,4.6vh,58px)] overflow-hidden rounded-[20px] bg-card-black px-[clamp(24px,5vw,80px)] py-[clamp(80px,17vh,210px)] text-white will-change-transform"
         style={{ opacity: 0, transform: "translateY(96px) scale(0.945)" }}
       >
-        <TricolorBar height={3} className="absolute top-0 left-0" />
+        {/* Flag video background */}
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+          <InViewVideo
+            src={FLAG_BG_VIDEO}
+            poster={FLAG_POSTER}
+            className="absolute inset-0 h-full w-full object-cover opacity-55"
+            aria-label=""
+            loadRootMargin="80% 0px 80% 0px"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.72) 50%, rgba(0,0,0,0.82) 100%)",
+            }}
+          />
+        </div>
 
-        <div ref={avatarsRef} className="flex items-center">
-          {[0, 1, 2].map((i) => (
+        <TricolorBar height={3} className="absolute top-0 left-0 z-[1]" />
+
+        {/* Horizontal U.S. military branch seal stack */}
+        <div
+          ref={logosRef}
+          className="relative z-[1] flex max-w-full flex-wrap items-center justify-center gap-y-2 px-2"
+          role="list"
+          aria-label="United States military branches"
+        >
+          {partnerLogos.map((logo, i) => (
             <div
-              key={i}
-              className={`relative h-[clamp(78px,7.6vw,112px)] w-[clamp(78px,7.6vw,112px)] overflow-hidden rounded-full border-[3px] border-card-black bg-[#2A2A2A] opacity-0 ${
-                i > 0 ? "-ml-5" : ""
+              key={logo.id}
+              role="listitem"
+              className={`relative flex h-[clamp(68px,7vw,100px)] w-[clamp(68px,7vw,100px)] shrink-0 items-center justify-center overflow-hidden rounded-full border-[3px] border-white/20 bg-white opacity-0 shadow-[0_8px_24px_rgba(0,0,0,0.45)] ${
+                i > 0 ? "-ml-3 min-[700px]:-ml-4" : ""
               }`}
-              data-slot={`cta-${i + 1}`}
-              role="img"
-              aria-label={`Team member ${i + 1}`}
-            />
+              style={{ zIndex: partnerLogos.length - i }}
+              title={logo.name}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={logo.src}
+                alt={logo.name}
+                className="h-[82%] w-[82%] object-contain"
+                draggable={false}
+              />
+            </div>
           ))}
         </div>
 
         <h2
           ref={headlineRef}
-          className="m-0 max-w-[24ch] text-center text-[clamp(30px,3.3vw,56px)] font-medium leading-[1.14] tracking-[-0.02em] text-pretty opacity-0"
+          className="relative z-[1] m-0 max-w-[24ch] text-center text-[clamp(30px,3.3vw,56px)] font-medium leading-[1.14] tracking-[-0.02em] text-pretty opacity-0"
         >
           {ctaCopy.titleLines.map((line) => (
             <span key={line} className="block">
@@ -164,13 +198,13 @@ export function CtaCard() {
 
         <Link
           href="/contact"
-          className="inline-flex items-center gap-2.5 rounded-xl bg-navy py-3.5 pr-3.5 pl-[30px] text-[clamp(15px,1.15vw,18px)] font-semibold transition-colors duration-200 hover:bg-red pme-focus-ring"
+          className="relative z-[1] inline-flex items-center gap-2.5 rounded-xl bg-navy py-3.5 pr-3.5 pl-[30px] text-[clamp(15px,1.15vw,18px)] font-semibold text-white transition-colors duration-200 hover:bg-red hover:text-white pme-focus-ring"
         >
-          <span ref={charsRef} className="inline-flex">
+          <span ref={charsRef} className="inline-flex text-white">
             {buttonChars.map((ch, i) => (
               <span
                 key={`${ch}-${i}`}
-                className="inline-block opacity-0"
+                className="inline-block text-white opacity-0"
                 style={{ whiteSpace: ch === " " ? "pre" : undefined }}
               >
                 {ch === " " ? "\u00A0" : ch}
@@ -179,7 +213,7 @@ export function CtaCard() {
           </span>
           <span
             ref={chipRef}
-            className="inline-flex h-[38px] w-[38px] items-center justify-center rounded-[9px] border border-white/32 opacity-0"
+            className="inline-flex h-[38px] w-[38px] items-center justify-center rounded-[9px] border border-white/32 text-white opacity-0"
           >
             <ChevronRightIcon />
           </span>

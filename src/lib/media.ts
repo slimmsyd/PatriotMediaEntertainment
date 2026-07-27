@@ -1,5 +1,11 @@
-/** Loading screen loop (visual). */
+/** Loading screen loop (visual) — flag atmosphere. */
 export const LOADER_BG_VIDEO = "/videos/loader-bg.mp4";
+
+/** Flag video used as CTA card background (same asset as loader). */
+export const FLAG_BG_VIDEO = "/videos/loader-bg.mp4";
+
+/** Still flag frame for video poster. */
+export const FLAG_POSTER = "/images/loader-flag.jpg";
 
 /** Hero background video (with sound). */
 export const SITE_BG_VIDEO = "/videos/site-bg.mp4";

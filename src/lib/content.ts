@@ -1,7 +1,6 @@
 export const site = {
   name: "Patriot Media Entertainment",
   wordmark: "PATRIOT MEDIA ENTERTAINMENT",
-  viewCount: "23.8 Mio",
   email: "hello@patriotmedia.com",
   bookingsEmail: "bookings@patriotmedia.com",
   phone: "(000) 000-0000",
@@ -63,6 +62,43 @@ export const ctaCopy = {
   titleLines: ["Unlock the right stage", "with our team"],
   button: "Contact us",
 };
+
+/**
+ * U.S. military branch seals — horizontal stack on the CTA card.
+ * Assets: U.S. government works (public domain) via Wikimedia Commons.
+ */
+export const partnerLogos = [
+  {
+    id: "army",
+    name: "United States Army",
+    src: "/images/partners/army.png",
+  },
+  {
+    id: "navy",
+    name: "United States Navy",
+    src: "/images/partners/navy.png",
+  },
+  {
+    id: "air-force",
+    name: "United States Air Force",
+    src: "/images/partners/air-force.png",
+  },
+  {
+    id: "marines",
+    name: "United States Marine Corps",
+    src: "/images/partners/marines.png",
+  },
+  {
+    id: "coast-guard",
+    name: "United States Coast Guard",
+    src: "/images/partners/coast-guard.png",
+  },
+  {
+    id: "space-force",
+    name: "United States Space Force",
+    src: "/images/partners/space-force.png",
+  },
+] as const;
 
 /** Upcoming shows — card grid above the footer (news-layout pattern). */
 export const upcomingEvents = [

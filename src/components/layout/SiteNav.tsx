@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { navLinks, site } from "@/lib/content";
 import { ChipButton } from "@/components/ui/ChipButton";
-import { CloseIcon, EyeIcon } from "@/components/ui/icons";
+import { CloseIcon } from "@/components/ui/icons";
 
 type SiteNavProps = {
   variant?: "landing" | "contact";
@@ -109,10 +109,12 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
           pointerEvents: hidden && !menuOpen ? "none" : "auto",
         }}
       >
-        <div className="flex items-center gap-3 text-[15px] font-medium tracking-[0.01em]">
-          <EyeIcon />
-          <span>{site.viewCount}</span>
-        </div>
+        <Link
+          href="/#home"
+          className="relative z-[51] max-w-[min(58vw,280px)] text-[12px] font-extrabold leading-tight tracking-[0.06em] uppercase text-white pme-focus-ring sm:max-w-none sm:text-[13px] sm:tracking-[0.1em]"
+        >
+          Patriot Media Entertainment
+        </Link>
 
         <nav className="hidden items-center gap-[clamp(18px,2.4vw,40px)] text-[13px] font-semibold tracking-[0.16em] uppercase min-[901px]:flex">
           {navLinks.map((link) => (
