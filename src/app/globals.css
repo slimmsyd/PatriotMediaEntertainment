@@ -1,26 +1,115 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --black: #000000;
+  --near-black: #0a0a0a;
+  --card-black: #141414;
+  --card-well: #0a0a0a;
+  --off-white: #f4f4f2;
+  --white: #ffffff;
+  --ink: #26262a;
+  --muted: #6e6e70;
+  --label: #898989;
+  --placeholder: #9a9a9c;
+  --line-light: #e3e3df;
+  --line-chip: #efefec;
+  --disabled: #b9b9b4;
+  --navy: #1b4fa8;
+  --navy-dark: #16407f;
+  --red: #c1272d;
+  --ease-enter: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --background: var(--black);
+  --foreground: var(--white);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-black: var(--black);
+  --color-near-black: var(--near-black);
+  --color-card-black: var(--card-black);
+  --color-card-well: var(--card-well);
+  --color-off-white: var(--off-white);
+  --color-white: var(--white);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-label: var(--label);
+  --color-placeholder: var(--placeholder);
+  --color-line-light: var(--line-light);
+  --color-line-chip: var(--line-chip);
+  --color-disabled: var(--disabled);
+  --color-navy: var(--navy);
+  --color-navy-dark: var(--navy-dark);
+  --color-red: var(--red);
+  --font-sans: var(--font-archivo);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto;
 }
 
 body {
+  margin: 0;
+  min-height: 100%;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-archivo), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+@keyframes pme-blink {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  56%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.pme-caret {
+  animation: pme-blink 900ms steps(1, end) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pme-caret {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+.pme-focus-ring:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 3px;
+}
+
+.pme-scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.pme-scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
