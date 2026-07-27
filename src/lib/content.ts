@@ -16,25 +16,34 @@ export const navLinks = [
   { label: "Merch", href: "/#merch" },
 ] as const;
 
+/** Shared showcase media until unique event films are provided. */
+const EVENT_PLACEHOLDER_VIDEO = "/videos/event-1.mp4";
+const EVENT_PLACEHOLDER_POSTER = "/images/event-1-poster.jpg";
+
 export const events = [
   {
     id: "event-1",
     title: "Heal the World",
     eyebrow: "Live in Munich",
     placeholder: "Drop event 1 film / photo",
-    video: "/videos/event-1.mp4",
+    video: EVENT_PLACEHOLDER_VIDEO,
+    poster: EVENT_PLACEHOLDER_POSTER,
   },
   {
     id: "event-2",
     title: "Event Title Two",
     eyebrow: "Previous event",
     placeholder: "Drop event 2 film / photo",
+    video: EVENT_PLACEHOLDER_VIDEO,
+    poster: EVENT_PLACEHOLDER_POSTER,
   },
   {
     id: "event-3",
     title: "Event Title Three",
     eyebrow: "Previous event",
     placeholder: "Drop event 3 film / photo",
+    video: EVENT_PLACEHOLDER_VIDEO,
+    poster: EVENT_PLACEHOLDER_POSTER,
   },
 ] as const;
 

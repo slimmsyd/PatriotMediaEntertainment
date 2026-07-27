@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { events } from "@/lib/content";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import { InViewVideo } from "@/components/ui/InViewVideo";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -96,6 +97,10 @@ export function EventsRail() {
         >
           {events.map((event) => {
             const videoSrc = "video" in event ? event.video : undefined;
+            const poster =
+              "poster" in event && typeof event.poster === "string"
+                ? event.poster
+                : undefined;
 
             return (
               <article
@@ -103,16 +108,25 @@ export function EventsRail() {
                 className="relative h-[82vh] w-[min(72vw,1180px)] shrink-0 overflow-hidden rounded-[26px] bg-card-well max-[900px]:h-[70vh] max-[900px]:w-[86vw] max-[900px]:snap-center"
               >
                 {videoSrc ? (
-                  <video
-                    className="absolute inset-0 h-full w-full object-cover"
-                    src={videoSrc}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    aria-label={event.title}
-                  />
+                  <>
+                    {/* Poster / solid fill while media buffers */}
+                    <div
+                      className="absolute inset-0 bg-card-well bg-cover bg-center"
+                      style={
+                        poster
+                          ? { backgroundImage: `url(${poster})` }
+                          : undefined
+                      }
+                      aria-hidden="true"
+                    />
+                    <InViewVideo
+                      src={videoSrc}
+                      poster={poster}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      aria-label={event.title}
+                      loadRootMargin="160% 0px 160% 0px"
+                    />
+                  </>
                 ) : (
                   <ImagePlaceholder
                     id={event.id}

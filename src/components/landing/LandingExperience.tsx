@@ -8,6 +8,8 @@ import { Hero } from "@/components/landing/Hero";
 import { EventsRail } from "@/components/landing/EventsRail";
 import { AboutSection } from "@/components/landing/AboutSection";
 import { CtaCard } from "@/components/landing/CtaCard";
+import { EVENT_1_VIDEO } from "@/lib/media";
+import { prefetchVideo } from "@/lib/prefetchVideo";
 
 export function LandingExperience() {
   const [heroStartAt, setHeroStartAt] = useState(0);
@@ -21,6 +23,8 @@ export function LandingExperience() {
           onComplete={(t) => {
             setHeroStartAt(t);
             setHeroActive(true);
+            // Hero has the network; start warming event tile video for the rail below
+            prefetchVideo(EVENT_1_VIDEO);
           }}
           onGone={() => setShowLoader(false)}
         />
