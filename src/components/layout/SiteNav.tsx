@@ -1,30 +1,140 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { navLinks, site } from "@/lib/content";
 import { ChipButton } from "@/components/ui/ChipButton";
 import { CloseIcon } from "@/components/ui/icons";
+
+gsap.registerPlugin(useGSAP);
 
 type SiteNavProps = {
   variant?: "landing" | "contact";
 };
 
+/** How far into the page (vh) counts as “still watching the hero”. */
+const HERO_CINEMA_END = 0.42;
+
 export function SiteNav({ variant = "landing" }: SiteNavProps) {
+  const headerRef = useRef<HTMLElement>(null);
+  const pillRef = useRef<HTMLButtonElement>(null);
+  const cinemaTween = useRef<gsap.core.Timeline | null>(null);
+
   const [hidden, setHidden] = useState(false);
   const [scrolledPastHero, setScrolledPastHero] = useState(
     variant === "contact",
   );
   const [menuOpen, setMenuOpen] = useState(false);
+  const [navHover, setNavHover] = useState(false);
+  /** Compact movie-mode while user is on the hero video. */
+  const [cinematic, setCinematic] = useState(variant === "landing");
+  /** Brief beat at full size after mount, then settle into cinema mode. */
+  const [cinemaArmed, setCinemaArmed] = useState(false);
 
   const openMenu = useCallback(() => setMenuOpen(true), []);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
   const toggleMenu = useCallback(() => setMenuOpen((v) => !v), []);
 
   useEffect(() => {
+    if (variant !== "landing") return;
+    const t = window.setTimeout(() => setCinemaArmed(true), 700);
+    return () => window.clearTimeout(t);
+  }, [variant]);
+
+  /** Cinematic shrink when watching hero; expand when interacting or leaving hero. */
+  const wantCinema =
+    variant === "landing" &&
+    cinemaArmed &&
+    cinematic &&
+    !menuOpen &&
+    !navHover &&
+    !hidden;
+
+  useGSAP(
+    () => {
+      const header = headerRef.current;
+      const pill = pillRef.current;
+      if (!header) return;
+
+      const reduce = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      cinemaTween.current?.kill();
+
+      if (reduce) {
+        gsap.set(header, { clearProps: "transform,opacity" });
+        if (pill) gsap.set(pill, { clearProps: "transform,opacity" });
+        return;
+      }
+
+      // Cinema: nav recedes (smaller, not gone) — letterbox / theater UI feel
+      if (wantCinema) {
+        cinemaTween.current = gsap.timeline({ defaults: { overwrite: "auto" } });
+        cinemaTween.current
+          .to(
+            header,
+            {
+              scale: 0.86,
+              y: -10,
+              opacity: 0.78,
+              duration: 1.15,
+              ease: "power3.inOut",
+              transformOrigin: "50% 0%",
+            },
+            0,
+          )
+          .to(
+            pill,
+            {
+              scale: 0.88,
+              y: 14,
+              opacity: 0.72,
+              duration: 1.15,
+              ease: "power3.inOut",
+              transformOrigin: "50% 100%",
+            },
+            0,
+          );
+      } else {
+        cinemaTween.current = gsap.timeline({ defaults: { overwrite: "auto" } });
+        cinemaTween.current
+          .to(
+            header,
+            {
+              scale: 1,
+              y: 0,
+              opacity: 1,
+              duration: 0.55,
+              ease: "power2.out",
+              transformOrigin: "50% 0%",
+            },
+            0,
+          )
+          .to(
+            pill,
+            {
+              scale: 1,
+              y: 0,
+              opacity: 1,
+              duration: 0.55,
+              ease: "power2.out",
+              transformOrigin: "50% 100%",
+            },
+            0,
+          );
+      }
+    },
+    { dependencies: [wantCinema], scope: headerRef },
+  );
+
+  useEffect(() => {
     if (variant === "contact") {
       setScrolledPastHero(true);
       setHidden(false);
+      setCinematic(false);
       return;
     }
 
@@ -34,9 +144,9 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
     const onScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        // Keep chrome visible while the menu is open
         if (menuOpen) {
           setHidden(false);
+          setCinematic(false);
           lastY = window.scrollY;
           return;
         }
@@ -46,6 +156,8 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
         const vh = window.innerHeight;
 
         setScrolledPastHero(y > vh * 0.6);
+        // Still “watching” the hero when near the top
+        setCinematic(y < vh * HERO_CINEMA_END);
 
         if (y < 40) {
           setHidden(false);
@@ -90,23 +202,30 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
     <>
       {/* Top navigation bar */}
       <header
-        className="fixed top-0 right-0 left-0 z-[50] flex h-[11vh] min-h-16 items-center justify-between px-[clamp(24px,4vw,72px)] text-white transition-[opacity,transform,background-color,border-color] duration-[420ms] ease-out"
+        ref={headerRef}
+        className="fixed top-0 right-0 left-0 z-[50] flex h-[11vh] min-h-16 items-center justify-between px-[clamp(24px,4vw,72px)] text-white will-change-transform"
         style={{
-          opacity: hidden && !menuOpen ? 0 : 1,
-          transform:
-            hidden && !menuOpen
-              ? "translateY(-104%) scale(0.94)"
-              : "translateY(0) scale(1)",
-          transitionDuration: "420ms, 520ms, 500ms, 500ms",
-          transitionTimingFunction:
-            "ease, cubic-bezier(0.22, 0.61, 0.36, 1), ease, ease",
+          // Hide-on-scroll (separate from cinematic GSAP scale)
+          opacity: hidden && !menuOpen ? 0 : undefined,
+          visibility: hidden && !menuOpen ? "hidden" : "visible",
+          pointerEvents: hidden && !menuOpen ? "none" : "auto",
+          transition: hidden
+            ? "opacity 420ms ease, visibility 420ms ease"
+            : "background-color 500ms ease, border-color 500ms ease, backdrop-filter 500ms ease",
           background: solid ? "rgba(10,10,10,0.92)" : "transparent",
           backdropFilter: solid ? "blur(14px)" : "none",
           WebkitBackdropFilter: solid ? "blur(14px)" : "none",
           borderBottom: solid
             ? "1px solid rgba(255,255,255,0.12)"
             : "1px solid transparent",
-          pointerEvents: hidden && !menuOpen ? "none" : "auto",
+        }}
+        onMouseEnter={() => setNavHover(true)}
+        onMouseLeave={() => setNavHover(false)}
+        onFocusCapture={() => setNavHover(true)}
+        onBlurCapture={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+            setNavHover(false);
+          }
         }}
       >
         <Link
@@ -158,6 +277,7 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
       {/* Fixed bottom Menu pill — always above the panel */}
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[52] flex justify-center pb-[max(20px,env(safe-area-inset-bottom))]">
         <button
+          ref={pillRef}
           type="button"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           aria-expanded={menuOpen}
@@ -167,7 +287,11 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
             e.stopPropagation();
             toggleMenu();
           }}
-          className="pointer-events-auto relative z-[52] inline-flex h-12 min-w-[148px] cursor-pointer items-center justify-between gap-6 rounded-full bg-white px-6 text-[16px] font-semibold tracking-[-0.01em] text-near-black shadow-[0_8px_28px_rgba(0,0,0,0.28)] transition-[transform,color,background-color] duration-200 hover:scale-[1.02] hover:bg-red hover:text-white active:scale-[0.98] pme-focus-ring"
+          onMouseEnter={() => setNavHover(true)}
+          onMouseLeave={() => setNavHover(false)}
+          onFocus={() => setNavHover(true)}
+          onBlur={() => setNavHover(false)}
+          className="pointer-events-auto relative z-[52] inline-flex h-12 min-w-[148px] cursor-pointer items-center justify-between gap-6 rounded-full bg-white px-6 text-[16px] font-semibold tracking-[-0.01em] text-near-black shadow-[0_8px_28px_rgba(0,0,0,0.28)] will-change-transform transition-colors duration-200 hover:bg-red hover:text-white pme-focus-ring"
         >
           <span>{menuOpen ? "Close" : "Menu"}</span>
           {menuOpen ? (
