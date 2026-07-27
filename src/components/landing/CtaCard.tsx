@@ -164,7 +164,7 @@ export function CtaCard() {
 
         <Link
           href="/contact"
-          className="inline-flex items-center gap-2.5 rounded-xl bg-navy py-3.5 pr-3.5 pl-[30px] text-[clamp(15px,1.15vw,18px)] font-semibold transition-colors duration-200 hover:bg-navy-dark pme-focus-ring"
+          className="inline-flex items-center gap-2.5 rounded-xl bg-navy py-3.5 pr-3.5 pl-[30px] text-[clamp(15px,1.15vw,18px)] font-semibold transition-colors duration-200 hover:bg-red pme-focus-ring"
         >
           <span ref={charsRef} className="inline-flex">
             {buttonChars.map((ch, i) => (

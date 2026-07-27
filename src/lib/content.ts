@@ -12,7 +12,7 @@ export const site = {
 export const navLinks = [
   { label: "Home", href: "/#home" },
   { label: "About", href: "/#about" },
-  { label: "Upcoming Events", href: "/#events" },
+  { label: "Upcoming Events", href: "/#upcoming" },
   { label: "Merch", href: "/#merch" },
 ] as const;
 
@@ -47,42 +47,56 @@ export const events = [
   },
 ] as const;
 
-export const milestones = [
-  {
-    id: "about-1",
-    year: "2019",
-    body: "Milestone copy goes here — what happened this year and why it mattered.",
-    placeholder: "Drop milestone photo",
-  },
-  {
-    id: "about-2",
-    year: "2021",
-    body: "Milestone copy goes here — what happened this year and why it mattered.",
-    placeholder: "Drop milestone photo",
-  },
-  {
-    id: "about-3",
-    year: "2023",
-    body: "Milestone copy goes here — what happened this year and why it mattered.",
-    placeholder: "Drop milestone photo",
-  },
-  {
-    id: "about-4",
-    year: "2025",
-    body: "Milestone copy goes here — what happened this year and why it mattered.",
-    placeholder: "Drop milestone photo",
-  },
-] as const;
-
 export const aboutCopy = {
   eyebrow: "Our story",
   titleLines: ["A story of", "American", "storytelling"],
   body: "Patriot Media Entertainment builds live shows and film around the people and places that shape this country. Replace this paragraph with your own founding story.",
+  cta: "Build with us",
+  ctaHref: "/contact",
+  /** Cleaned founder / leadership photo — single image on the right of Our Story. */
+  founderImage: "/images/about-founder.jpg",
+  founderImageAlt:
+    "Patriot Media Entertainment leadership at a national event",
 };
 
 export const ctaCopy = {
   titleLines: ["Unlock the right stage", "with our team"],
   button: "Contact us",
+};
+
+/** Upcoming shows — card grid above the footer (news-layout pattern). */
+export const upcomingEvents = [
+  {
+    id: "up-1",
+    date: "14.09.2026",
+    title: "Heal the World: Live in Munich",
+    href: "/contact",
+    image: EVENT_PLACEHOLDER_POSTER,
+    imageAlt: "Heal the World live performance",
+  },
+  {
+    id: "up-2",
+    date: "02.10.2026",
+    title: "American Stories Open Air Tour",
+    href: "/contact",
+    image: EVENT_PLACEHOLDER_POSTER,
+    imageAlt: "American Stories open air tour",
+  },
+  {
+    id: "up-3",
+    date: "21.11.2026",
+    title: "Patriot Night: Film & Live Stage",
+    href: "/contact",
+    image: EVENT_PLACEHOLDER_POSTER,
+    imageAlt: "Patriot Night film and live stage",
+  },
+] as const;
+
+export const upcomingCopy = {
+  eyebrow: "Events",
+  title: "Discover our upcoming events",
+  seeAll: "See all our events",
+  seeAllHref: "/contact",
 };
 
 export const contactSubjects = [
@@ -94,10 +108,10 @@ export const contactSubjects = [
 
 export const footerColumns = {
   shows: [
-    { label: "Upcoming Events", href: "/#events" },
+    { label: "Upcoming Events", href: "/#upcoming" },
     { label: "Past Events", href: "/#events" },
-    { label: "Tickets", href: "/#events" },
-    { label: "Venues", href: "/#events" },
+    { label: "Tickets", href: "/#upcoming" },
+    { label: "Venues", href: "/#upcoming" },
   ],
   company: [
     { label: "About Us", href: "/#about" },

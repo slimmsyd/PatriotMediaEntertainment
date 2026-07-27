@@ -8,6 +8,7 @@ import { Hero } from "@/components/landing/Hero";
 import { EventsRail } from "@/components/landing/EventsRail";
 import { AboutSection } from "@/components/landing/AboutSection";
 import { CtaCard } from "@/components/landing/CtaCard";
+import { UpcomingEvents } from "@/components/landing/UpcomingEvents";
 import { EVENT_1_VIDEO } from "@/lib/media";
 import { prefetchVideo } from "@/lib/prefetchVideo";
 
@@ -36,6 +37,7 @@ export function LandingExperience() {
         <AboutSection />
         <div id="merch" className="scroll-mt-24" aria-hidden="true" />
         <CtaCard />
+        <UpcomingEvents />
       </main>
       <SiteFooter />
     </div>

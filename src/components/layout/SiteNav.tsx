@@ -104,14 +104,14 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
             <Link
               key={link.label}
               href={link.href}
-              className="transition-colors duration-200 hover:text-red pme-focus-ring"
+              className="pme-nav-link pme-focus-ring"
             >
               {link.label}
             </Link>
           ))}
           <ChipButton
             href="/contact"
-            className="py-2.5 pr-2.5 pl-[22px] text-[13px] tracking-[0.16em] uppercase"
+            className="py-2.5 pr-2.5 pl-[22px] text-[13px] tracking-[0.16em] uppercase hover:bg-red"
             chip="›"
           >
             Contact
@@ -139,7 +139,7 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
           aria-expanded={menuOpen}
           aria-controls="site-menu-panel"
           onClick={() => setMenuOpen((v) => !v)}
-          className="pointer-events-auto inline-flex h-12 min-w-[148px] cursor-pointer items-center justify-between gap-6 rounded-full bg-white px-6 text-[16px] font-semibold tracking-[-0.01em] text-near-black shadow-[0_8px_28px_rgba(0,0,0,0.28)] transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98] pme-focus-ring"
+          className="pointer-events-auto inline-flex h-12 min-w-[148px] cursor-pointer items-center justify-between gap-6 rounded-full bg-white px-6 text-[16px] font-semibold tracking-[-0.01em] text-near-black shadow-[0_8px_28px_rgba(0,0,0,0.28)] transition-[transform,color,background-color] duration-200 hover:scale-[1.02] hover:bg-red hover:text-white active:scale-[0.98] pme-focus-ring"
         >
           <span>{menuOpen ? "Close" : "Menu"}</span>
           {menuOpen ? (
@@ -171,7 +171,7 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
               <Link
                 key={link.label}
                 href={link.href}
-                className="rounded-xl px-2 py-3 text-[clamp(22px,4vw,32px)] font-medium tracking-[-0.02em] transition-colors duration-200 hover:text-red pme-focus-ring"
+                className="rounded-xl px-2 py-3 text-[clamp(22px,4vw,32px)] font-medium tracking-[-0.02em] pme-link-red pme-focus-ring"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}

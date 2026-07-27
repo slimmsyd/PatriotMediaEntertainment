@@ -49,7 +49,7 @@ export function SiteFooter() {
             <Link
               key={link.label}
               href={link.href}
-              className="text-base text-near-black transition-colors duration-200 hover:text-red pme-focus-ring"
+              className="text-base text-near-black pme-link-red pme-focus-ring"
             >
               {link.label}
             </Link>
@@ -60,7 +60,7 @@ export function SiteFooter() {
               target="_blank"
               rel="noreferrer"
               aria-label="Instagram"
-              className="inline-flex h-[54px] w-[54px] items-center justify-center rounded-[10px] bg-near-black text-white transition-colors duration-200 hover:bg-navy pme-focus-ring"
+              className="inline-flex h-[54px] w-[54px] items-center justify-center rounded-[10px] bg-near-black text-white transition-colors duration-200 hover:bg-red pme-focus-ring"
             >
               <InstagramIcon />
             </a>
@@ -84,19 +84,19 @@ export function SiteFooter() {
         <div className="flex flex-wrap items-center gap-5">
           <Link
             href="#"
-            className="text-[15px] font-semibold text-near-black transition-colors duration-200 hover:text-red pme-focus-ring"
+            className="text-[15px] font-semibold text-near-black pme-link-red pme-focus-ring"
           >
             Legal Notice
           </Link>
           <Link
             href="#"
-            className="text-[15px] font-semibold text-near-black transition-colors duration-200 hover:text-red pme-focus-ring"
+            className="text-[15px] font-semibold text-near-black pme-link-red pme-focus-ring"
           >
             Privacy
           </Link>
           <button
             type="button"
-            className="inline-flex items-center gap-2.5 rounded-[10px] border border-near-black/16 bg-transparent px-[18px] py-3 text-[15px] font-semibold text-near-black transition-colors duration-200 hover:border-navy hover:text-navy cursor-pointer pme-focus-ring"
+            className="inline-flex items-center gap-2.5 rounded-[10px] border border-near-black/16 bg-transparent px-[18px] py-3 text-[15px] font-semibold text-near-black transition-colors duration-200 hover:border-red hover:text-red cursor-pointer pme-focus-ring"
           >
             <span
               className="inline-flex h-[15px] w-[22px] overflow-hidden rounded-[2px] border border-near-black/12"
@@ -129,7 +129,7 @@ function FooterCol({
         <Link
           key={link.label}
           href={link.href}
-          className="text-base text-muted transition-colors duration-200 hover:text-red pme-focus-ring"
+          className="text-base text-muted pme-link-red pme-focus-ring"
         >
           {link.label}
         </Link>

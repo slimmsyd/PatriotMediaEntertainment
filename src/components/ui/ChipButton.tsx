@@ -13,7 +13,7 @@ type ChipButtonProps = {
 };
 
 const base =
-  "inline-flex items-center gap-3.5 rounded-xl bg-navy text-white font-semibold cursor-pointer transition-colors duration-200 pme-focus-ring hover:bg-navy-dark";
+  "inline-flex items-center gap-3.5 rounded-xl bg-navy text-white font-semibold cursor-pointer transition-colors duration-200 pme-focus-ring hover:bg-red hover:text-white";
 
 export function ChipButton({
   href,
@@ -22,14 +22,14 @@ export function ChipButton({
   onClick,
   type = "button",
   className = "",
-  chipClassName = "bg-white/22",
+  chipClassName = "bg-white/22 text-white",
 }: ChipButtonProps) {
   const content = (
     <>
-      <span>{children}</span>
+      <span className="text-white">{children}</span>
       {chip != null && (
         <span
-          className={`inline-flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-lg text-[13px] tracking-normal ${chipClassName}`}
+          className={`inline-flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-lg text-[13px] tracking-normal text-white ${chipClassName}`}
         >
           {chip}
         </span>
