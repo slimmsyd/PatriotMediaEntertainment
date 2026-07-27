@@ -30,7 +30,8 @@ export function LandingExperience() {
           onGone={() => setShowLoader(false)}
         />
       )}
-      <SiteNav variant="landing" />
+      {/* Nav + menu chrome only after loader fully exits */}
+      {!showLoader && <SiteNav variant="landing" />}
       <main>
         <Hero startAt={heroStartAt} soundOn active={heroActive} />
         <EventsRail />

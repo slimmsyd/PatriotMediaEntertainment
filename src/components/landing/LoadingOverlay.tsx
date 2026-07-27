@@ -153,7 +153,7 @@ export function LoadingOverlay({ onComplete, onGone }: LoadingOverlayProps) {
   return (
     <div
       ref={rootRef}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black px-10 pb-[120px] pt-24"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black px-10 pb-[120px] pt-24"
       aria-busy={!done}
       aria-live="polite"
     >
