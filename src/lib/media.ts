@@ -34,6 +34,12 @@ export const EVENT_4_VIDEO = "/videos/event-4.mp4";
 /** Still frame / title card for event-4. */
 export const EVENT_4_POSTER = "/images/event-4-poster.jpg";
 
+/** Event tile 5 — Nickelback rock showcase. */
+export const EVENT_5_VIDEO = "/videos/event-5.mp4";
+
+/** Still frame / title card for event-5. */
+export const EVENT_5_POSTER = "/images/event-5-poster.jpg";
+
 /** Locked brand logo graphic (Image #2). */
 export const BRAND_LOGO = "/images/brand-logo.png";
 

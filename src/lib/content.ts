@@ -7,6 +7,8 @@ import {
   EVENT_3_VIDEO,
   EVENT_4_POSTER,
   EVENT_4_VIDEO,
+  EVENT_5_POSTER,
+  EVENT_5_VIDEO,
 } from "@/lib/media";
 
 export const site = {
@@ -62,6 +64,14 @@ export const events = [
     placeholder: "Miranda Lambert live film",
     video: EVENT_4_VIDEO,
     poster: EVENT_4_POSTER,
+  },
+  {
+    id: "event-5",
+    title: "Nickelback",
+    eyebrow: "Rock",
+    placeholder: "Nickelback live film",
+    video: EVENT_5_VIDEO,
+    poster: EVENT_5_POSTER,
   },
 ] as const;
 
