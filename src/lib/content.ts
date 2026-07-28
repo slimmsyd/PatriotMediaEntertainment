@@ -34,7 +34,7 @@ export const events = [
   {
     id: "event-1",
     title: "Heal the World",
-    eyebrow: "Live in Munich",
+    eyebrow: "Pop",
     placeholder: "Drop event 1 film / photo",
     video: EVENT_1_VIDEO,
     poster: EVENT_1_POSTER,
@@ -42,7 +42,7 @@ export const events = [
   {
     id: "event-2",
     title: "Our Breath",
-    eyebrow: "Live showcase",
+    eyebrow: "Folk",
     placeholder: "Our Breath film",
     video: EVENT_2_VIDEO,
     poster: EVENT_2_POSTER,
@@ -50,7 +50,7 @@ export const events = [
   {
     id: "event-3",
     title: "Kirk Franklin",
-    eyebrow: "Jesus Paid It All",
+    eyebrow: "Gospel",
     placeholder: "Kirk Franklin live film",
     video: EVENT_3_VIDEO,
     poster: EVENT_3_POSTER,
