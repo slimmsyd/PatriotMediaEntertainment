@@ -45,17 +45,23 @@ export function LoadingOverlay({ onComplete, onGone }: LoadingOverlayProps) {
     audio.defaultMuted = false;
     audio.volume = 1;
 
+    let unlock: (() => void) | undefined;
+
     const tryPlay = async () => {
       try {
         audio.muted = false;
         await audio.play();
       } catch {
-        const unlock = () => {
+        unlock = () => {
+          window.removeEventListener("pointerdown", unlock!);
+          window.removeEventListener("keydown", unlock!);
+          // Loader may have already finished and unmounted by the time the
+          // user's first gesture arrives — don't resurrect playback on a
+          // detached clone the Hero controls have no way to reach.
+          if (!audio.isConnected) return;
           audio.muted = false;
           audio.volume = 1;
           void audio.play().catch(() => undefined);
-          window.removeEventListener("pointerdown", unlock);
-          window.removeEventListener("keydown", unlock);
         };
         window.addEventListener("pointerdown", unlock, { once: true });
         window.addEventListener("keydown", unlock, { once: true });
@@ -63,6 +69,12 @@ export function LoadingOverlay({ onComplete, onGone }: LoadingOverlayProps) {
     };
 
     void tryPlay();
+
+    return () => {
+      if (!unlock) return;
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("keydown", unlock);
+    };
   }, []);
 
   useGSAP(
