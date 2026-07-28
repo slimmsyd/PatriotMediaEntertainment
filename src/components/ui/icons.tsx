@@ -56,6 +56,23 @@ export function SpeakerIcon({ muted = false, ...props }: IconProps & { muted?: b
   );
 }
 
+/** Pause bars when playing; play triangle when paused. */
+export function PlayPauseIcon({ playing = true, ...props }: IconProps & { playing?: boolean }) {
+  if (playing) {
+    return (
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" {...props}>
+        <rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor" />
+        <rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" {...props}>
+      <path d="M8 5.5v13l11-6.5-11-6.5z" fill="currentColor" />
+    </svg>
+  );
+}
+
 export function EnvelopeIcon(props: IconProps) {
   return (
     <svg viewBox="0 0 24 24" width="26" height="26" fill="none" aria-hidden="true" {...props}>

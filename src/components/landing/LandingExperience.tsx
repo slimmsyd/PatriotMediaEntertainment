@@ -9,7 +9,12 @@ import { EventsRail } from "@/components/landing/EventsRail";
 import { AboutSection } from "@/components/landing/AboutSection";
 import { CtaCard } from "@/components/landing/CtaCard";
 import { UpcomingEvents } from "@/components/landing/UpcomingEvents";
-import { EVENT_1_VIDEO } from "@/lib/media";
+import {
+  EVENT_1_VIDEO,
+  EVENT_2_VIDEO,
+  EVENT_3_VIDEO,
+  EVENT_4_VIDEO,
+} from "@/lib/media";
 import { prefetchVideo } from "@/lib/prefetchVideo";
 
 export function LandingExperience() {
@@ -24,8 +29,11 @@ export function LandingExperience() {
           onComplete={(t) => {
             setHeroStartAt(t);
             setHeroActive(true);
-            // Hero has the network; start warming event tile video for the rail below
+            // Hero has the network; start warming event tile videos for the rail below
             prefetchVideo(EVENT_1_VIDEO);
+            prefetchVideo(EVENT_2_VIDEO);
+            prefetchVideo(EVENT_3_VIDEO);
+            prefetchVideo(EVENT_4_VIDEO);
           }}
           onGone={() => setShowLoader(false)}
         />
