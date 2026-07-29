@@ -1,7 +1,8 @@
-/** Loading screen loop (visual) — flag atmosphere. */
-export const LOADER_BG_VIDEO = "/videos/loader-bg.mp4";
+/** Loading screen loop (visual). Swap which line is active to change the loader. */
+// export const LOADER_BG_VIDEO = "/videos/loader-bg.mp4"; // flag atmosphere
+export const LOADER_BG_VIDEO = "/videos/250-years.mp4"; // 250 Years
 
-/** Flag video used as CTA card background (same asset as loader). */
+/** Flag video used as CTA card background (flag atmosphere; independent of loader). */
 export const FLAG_BG_VIDEO = "/videos/loader-bg.mp4";
 
 /** Still flag frame for video poster. */
