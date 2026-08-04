@@ -32,8 +32,6 @@ export function SiteFooter() {
             <div>
               <h3 className="mb-2 text-[19px] font-bold">Bookings</h3>
               <p className="m-0 text-base leading-[1.6] text-muted">
-                {site.bookingsEmail}
-                <br />
                 {site.phone}
               </p>
             </div>

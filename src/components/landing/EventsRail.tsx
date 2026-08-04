@@ -1,12 +1,12 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Draggable } from "gsap/Draggable";
 import { useGSAP } from "@gsap/react";
 import { events } from "@/lib/content";
-import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { InViewVideo } from "@/components/ui/InViewVideo";
 
 gsap.registerPlugin(ScrollTrigger, Draggable, useGSAP);
@@ -199,45 +199,24 @@ export function EventsRail() {
           ref={trackRef}
           className="pme-events-track flex gap-[clamp(24px,3vw,56px)] px-[clamp(24px,4vw,72px)] will-change-transform max-[900px]:w-max"
         >
-          {events.map((event) => {
-            const videoSrc = "video" in event ? event.video : undefined;
-            const poster =
-              "poster" in event && typeof event.poster === "string"
-                ? event.poster
-                : undefined;
-
-            return (
+          {events.map((event) =>
+            event.kind === "film" ? (
               <article
                 key={event.id}
                 className="relative h-[82vh] w-[min(72vw,1180px)] shrink-0 overflow-hidden rounded-[26px] bg-card-well max-[900px]:h-[70vh] max-[900px]:w-[86vw]"
               >
-                {videoSrc ? (
-                  <>
-                    <div
-                      className="absolute inset-0 bg-card-well bg-cover bg-center"
-                      style={
-                        poster
-                          ? { backgroundImage: `url(${poster})` }
-                          : undefined
-                      }
-                      aria-hidden="true"
-                    />
-                    <InViewVideo
-                      src={videoSrc}
-                      poster={poster}
-                      className="pointer-events-none absolute inset-0 h-full w-full object-cover max-[900px]:pointer-events-none"
-                      aria-label={event.title}
-                      loadRootMargin="160% 0px 160% 0px"
-                    />
-                  </>
-                ) : (
-                  <ImagePlaceholder
-                    id={event.id}
-                    label={event.placeholder}
-                    rounded="rounded-[26px]"
-                    className="bg-card-well"
-                  />
-                )}
+                <div
+                  className="absolute inset-0 bg-card-well bg-cover bg-center"
+                  style={{ backgroundImage: `url(${event.poster})` }}
+                  aria-hidden="true"
+                />
+                <InViewVideo
+                  src={event.video}
+                  poster={event.poster}
+                  className="pointer-events-none absolute inset-0 h-full w-full object-cover max-[900px]:pointer-events-none"
+                  aria-label={event.title}
+                  loadRootMargin="160% 0px 160% 0px"
+                />
                 <div
                   className="pointer-events-none absolute inset-0"
                   style={{
@@ -254,8 +233,43 @@ export function EventsRail() {
                   </h2>
                 </div>
               </article>
-            );
-          })}
+            ) : (
+              /* Flyers carry their own typography, so the caption sits below
+                 the artwork instead of overlaying and fighting it. */
+              <article
+                key={event.id}
+                className="flex h-[82vh] w-[min(46vw,720px)] shrink-0 flex-col overflow-hidden rounded-[26px] bg-card-well max-[900px]:h-[70vh] max-[900px]:w-[76vw]"
+              >
+                <div className="relative min-h-0 flex-1">
+                  {/* Blurred fill of the flyer itself — no dead letterbox bars. */}
+                  <div
+                    className="absolute inset-0 scale-110 bg-cover bg-center blur-2xl brightness-[0.35]"
+                    style={{ backgroundImage: `url(${event.image})` }}
+                    aria-hidden="true"
+                  />
+                  <Image
+                    src={event.image}
+                    alt={event.imageAlt}
+                    fill
+                    sizes="(max-width: 900px) 76vw, 46vw"
+                    className="object-contain"
+                    draggable={false}
+                  />
+                </div>
+                <div className="flex shrink-0 flex-col gap-1.5 bg-black px-[clamp(20px,2.4vw,34px)] py-[clamp(18px,2.2vh,26px)] text-white">
+                  <span className="text-[14px] font-bold tracking-[0.04em] text-white/70">
+                    {event.eyebrow}
+                  </span>
+                  <h2 className="m-0 text-[clamp(24px,2.3vw,38px)] font-extrabold leading-[1.02] tracking-[-0.02em] text-pretty">
+                    {event.title}
+                  </h2>
+                  <p className="m-0 text-[clamp(13px,0.95vw,15px)] font-medium text-white/65">
+                    {event.meta}
+                  </p>
+                </div>
+              </article>
+            ),
+          )}
         </div>
       </div>
     </section>

@@ -1,11 +1,19 @@
-import { EVENT_1_POSTER, EVENT_1_VIDEO } from "@/lib/media";
+import {
+  EVENT_1_POSTER,
+  EVENT_1_VIDEO,
+  EVENT_2_POSTER,
+  EVENT_2_VIDEO,
+  EVENT_3_POSTER,
+  EVENT_3_VIDEO,
+  EVENT_4_POSTER,
+  EVENT_4_VIDEO,
+  EVENT_5_POSTER,
+  EVENT_5_VIDEO,
+} from "@/lib/media";
 
 export const site = {
   name: "Patriot Entertainment & Media Group",
   wordmark: "PATRIOT ENTERTAINMENT & MEDIA GROUP",
-  // TODO(client): no new email provided with the rebrand copy — placeholders retained.
-  email: "hello@patriotmedia.com",
-  bookingsEmail: "bookings@patriotmedia.com",
   phone: "540-990-7868",
   addressLines: [
     "General Washington Executive Center",
@@ -19,23 +27,105 @@ export const navLinks = [
   { label: "Home", href: "/#home" },
   { label: "About", href: "/#about" },
   { label: "Upcoming Events", href: "/#upcoming" },
-  { label: "Merch", href: "/#merch" },
 ] as const;
 
-/** Shared showcase media until unique event films are provided. */
-const EVENT_PLACEHOLDER_VIDEO = "/videos/event-1.mp4";
-const EVENT_PLACEHOLDER_POSTER = "/images/event-1-poster.jpg";
+/**
+ * Past-events rail. Two shapes: showcase films (`kind: "film"`, full-bleed
+ * video) and real event flyers (`kind: "flyer"`, portrait artwork shown whole
+ * against a blurred fill of itself).
+ */
+export type PastEvent =
+  | {
+      kind: "film";
+      id: string;
+      title: string;
+      eyebrow: string;
+      video: string;
+      poster: string;
+    }
+  | {
+      kind: "flyer";
+      id: string;
+      title: string;
+      eyebrow: string;
+      /** Date + venue line under the title. */
+      meta: string;
+      image: string;
+      imageAlt: string;
+    };
 
-export const events = [
+export const events: readonly PastEvent[] = [
   {
+    kind: "flyer",
+    id: "prayer-candlelight-vigil",
+    title: "Prayer & Candlelight Vigil",
+    eyebrow: "Community",
+    meta: "July 18, 2026 · Kingdom Ambassadors Center, Manassas, VA",
+    image: "/images/prayer-candlelight-vigil.jpg",
+    imageAlt:
+      "Prayer & Candlelight Vigil honoring our soldiers, July 18 2026 at Kingdom Ambassadors Center in Manassas, Virginia",
+  },
+  {
+    kind: "flyer",
+    id: "pre-new-years-party-2025",
+    title: "Pre New Year's Party",
+    eyebrow: "Elvis Tribute",
+    meta: "December 30, 2025 · ALC Potomac Place, Woodbridge, VA",
+    image: "/images/pre-new-years-party-elvis.jpg",
+    imageAlt:
+      "Pre New Year's Party with Elvis tribute artist Lionel Ward, December 30 2025 at ALC Assisted Living Center Potomac Place in Woodbridge, Virginia",
+  },
+  {
+    kind: "flyer",
+    id: "benefit-concert-austin-hankins",
+    title: "Benefit Concert for Austin Hankins",
+    eyebrow: "Benefit",
+    meta: "December 4, 2024 · Bearded Monkey, Fredericksburg, VA",
+    image: "/images/benefit-concert-austin-hankins.jpg",
+    imageAlt:
+      "Benefit Concert for Austin Hankins featuring All In One Band and The Home Grown Band, December 4 2024 at Bearded Monkey in Fredericksburg, Virginia",
+  },
+  {
+    kind: "film",
     id: "event-1",
     title: "Heal the World",
     eyebrow: "Pop",
-    placeholder: "Drop event 1 film / photo",
     video: EVENT_1_VIDEO,
     poster: EVENT_1_POSTER,
   },
-] as const;
+  {
+    kind: "film",
+    id: "event-2",
+    title: "Our Breath",
+    eyebrow: "Folk",
+    video: EVENT_2_VIDEO,
+    poster: EVENT_2_POSTER,
+  },
+  {
+    kind: "film",
+    id: "event-3",
+    title: "Kirk Franklin",
+    eyebrow: "Gospel",
+    video: EVENT_3_VIDEO,
+    poster: EVENT_3_POSTER,
+  },
+  {
+    kind: "film",
+    id: "event-4",
+    title: "Miranda Lambert",
+    eyebrow: "Country",
+    video: EVENT_4_VIDEO,
+    poster: EVENT_4_POSTER,
+  },
+  {
+    kind: "film",
+    id: "event-5",
+    title: "Nickelback",
+    eyebrow: "Rock",
+    video: EVENT_5_VIDEO,
+    poster: EVENT_5_POSTER,
+  },
+];
 
 export const aboutCopy = {
   eyebrow: "Who we are",
@@ -47,8 +137,8 @@ export const aboutCopy = {
   ],
   cta: "Build with us",
   ctaHref: "/contact",
-  /** Cleaned founder / leadership photo — single image on the right of Who We Are. */
-  founderImage: "/images/about-founder.jpg",
+  /** Founder portrait — single image on the right of Who We Are. */
+  founderImage: "/images/reggie.jpg",
   founderImageAlt:
     "Reggie Randall-Sans, founder of Patriot Entertainment & Media Group",
   founderName: "Reggie Randall-Sans",
@@ -146,33 +236,31 @@ export const partnerLogos = [
   },
 ] as const;
 
-/** Upcoming shows — card grid above the footer (news-layout pattern). */
-export const upcomingEvents = [
+export type UpcomingEvent = {
+  id: string;
+  /** Displayed as DD.MM.YYYY — parsed into a real datetime attribute. */
+  date: string;
+  title: string;
+  href: string;
+  image: string;
+  imageAlt: string;
+};
+
+/**
+ * Upcoming shows — the rail above the footer. Real dates only; the section
+ * hides itself when this is empty rather than showing invented listings.
+ */
+export const upcomingEvents: readonly UpcomingEvent[] = [
   {
-    id: "up-1",
-    date: "14.09.2026",
-    title: "Heal the World: Live in Munich",
+    id: "fredericksburg-food-coop-2026",
+    date: "03.10.2026",
+    title: "Fredericksburg Food Co-op Membership Drive",
     href: "/contact",
-    image: EVENT_PLACEHOLDER_POSTER,
-    imageAlt: "Heal the World live performance",
+    image: "/images/fredericksburg-food-coop.jpg",
+    imageAlt:
+      "Fredericksburg Food Co-op Membership Drive with mini concert and fall fashion show, Saturday October 3 2026 at 320 Emancipation Highway, Fredericksburg, Virginia",
   },
-  {
-    id: "up-2",
-    date: "02.10.2026",
-    title: "American Stories Open Air Tour",
-    href: "/contact",
-    image: EVENT_PLACEHOLDER_POSTER,
-    imageAlt: "American Stories open air tour",
-  },
-  {
-    id: "up-3",
-    date: "21.11.2026",
-    title: "Patriot Night: Film & Live Stage",
-    href: "/contact",
-    image: EVENT_PLACEHOLDER_POSTER,
-    imageAlt: "Patriot Night film and live stage",
-  },
-] as const;
+];
 
 export const upcomingCopy = {
   eyebrow: "Events",
@@ -194,10 +282,7 @@ export const footerColumns = {
     { label: "Past Events", href: "/#events" },
     { label: "Venues", href: "/#upcoming" },
   ],
-  company: [
-    { label: "About Us", href: "/#about" },
-    { label: "Merch", href: "/#merch" },
-  ],
+  company: [{ label: "About Us", href: "/#about" }],
   connect: [
     { label: "Contact", href: "/contact" },
     { label: "Newsletter", href: "/contact" },

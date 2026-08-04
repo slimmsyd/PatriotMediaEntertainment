@@ -318,6 +318,9 @@ select {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Portrait source is taller than the 4:4.4 frame — bias the crop up so the
+     hat and face stay whole and the trim comes off the bottom. */
+  object-position: 50% 12%;
 }
 
 .pme-about__credit {

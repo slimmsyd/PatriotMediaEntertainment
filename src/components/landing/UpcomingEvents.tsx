@@ -5,16 +5,21 @@ import Image from "next/image";
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { upcomingCopy, upcomingEvents } from "@/lib/content";
+import { upcomingCopy, upcomingEvents, type UpcomingEvent } from "@/lib/content";
 import { ChevronRightIcon } from "@/components/ui/icons";
 import { StepEyebrow } from "@/components/ui/StepEyebrow";
 
 gsap.registerPlugin(useGSAP);
 
-/** Two copies of the list = seamless loop when x resets at -50%. */
+/** Two copies of the list = seamless loop when x resets by one set's pitch. */
 const LOOP_SETS = 2;
 /** Seconds for one full set to scroll past (lower = faster). */
 const LOOP_DURATION = 28;
+/**
+ * Below this many cards a loop looks broken — one set can't span the viewport,
+ * so the reset leaves a visible gap. Render a static row instead.
+ */
+const MARQUEE_MIN_CARDS = 4;
 
 export function UpcomingEvents() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -33,16 +38,21 @@ export function UpcomingEvents() {
       ).matches;
       if (reduce) return;
 
+      if (upcomingEvents.length < MARQUEE_MIN_CARDS) return;
+
       const setup = () => {
         tweenRef.current?.kill();
         gsap.set(track, { x: 0 });
 
-        // Half of total width = one full set of cards (we render two identical sets)
-        const half = track.scrollWidth / LOOP_SETS;
-        if (half <= 0) return;
+        // One set's pitch, not scrollWidth/SETS: scrollWidth is short by one
+        // gap (there are SETS*n-1 gaps, not SETS*n), which would drift the
+        // seam by half a gap on every loop.
+        const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+        const pitch = (track.scrollWidth + gap) / LOOP_SETS;
+        if (pitch <= 0) return;
 
         tweenRef.current = gsap.to(track, {
-          x: -half,
+          x: -pitch,
           duration: LOOP_DURATION,
           ease: "none",
           repeat: -1,
@@ -76,7 +86,13 @@ export function UpcomingEvents() {
     { scope: sectionRef },
   );
 
-  const loopItems = Array.from({ length: LOOP_SETS }, (_, setIndex) =>
+  // No real dates on the books yet — hide the section rather than run an
+  // empty marquee. It comes back on its own once upcomingEvents is populated.
+  if (upcomingEvents.length === 0) return null;
+
+  const marquee = upcomingEvents.length >= MARQUEE_MIN_CARDS;
+
+  const loopItems = Array.from({ length: marquee ? LOOP_SETS : 1 }, (_, setIndex) =>
     upcomingEvents.map((event, index) => ({
       event,
       index,
@@ -116,16 +132,26 @@ export function UpcomingEvents() {
         </Link>
       </div>
 
-      {/* Infinite marquee */}
+      {/* Marquee once there are enough cards to span the viewport; a padded
+          static row below that, where a loop would only show its own seam. */}
       <div
         ref={viewportRef}
-        className="relative overflow-hidden"
-        aria-roledescription="carousel"
-        aria-label="Upcoming events, continuously scrolling. Hover or focus to pause."
+        className={marquee ? "relative overflow-hidden" : "relative"}
+        {...(marquee
+          ? {
+              "aria-roledescription": "carousel",
+              "aria-label":
+                "Upcoming events, continuously scrolling. Hover or focus to pause.",
+            }
+          : {})}
       >
         <ul
           ref={trackRef}
-          className="m-0 flex w-max list-none items-stretch gap-[clamp(18px,2.2vw,28px)] p-0 will-change-transform"
+          className={`m-0 flex list-none items-stretch gap-[clamp(18px,2.2vw,28px)] p-0 ${
+            marquee
+              ? "w-max will-change-transform"
+              : "flex-wrap px-[clamp(24px,4vw,72px)]"
+          }`}
         >
           {loopItems.map(({ event, index, key, inert }) => (
             <li
@@ -143,16 +169,15 @@ export function UpcomingEvents() {
   );
 }
 
-type EventItem = (typeof upcomingEvents)[number];
-
-function EventCard({ event, index }: { event: EventItem; index: number }) {
+function EventCard({ event, index }: { event: UpcomingEvent; index: number }) {
   return (
     <Link
       href={event.href}
       className="group flex h-full cursor-pointer flex-col gap-5 rounded-[4px] pme-focus-ring"
       tabIndex={0}
     >
-      <div className="relative aspect-[16/11] overflow-hidden rounded-[22px] bg-card-well">
+      {/* Portrait — event artwork is flyer-shaped, so the card is too. */}
+      <div className="relative aspect-[2/3] overflow-hidden rounded-[22px] bg-card-well">
         <Image
           src={event.image}
           alt={event.imageAlt}
