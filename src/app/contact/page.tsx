@@ -5,10 +5,11 @@ import { ContactForm } from "@/components/contact/ContactForm";
 import { ContactRail } from "@/components/contact/ContactRail";
 import { StepEyebrow } from "@/components/ui/StepEyebrow";
 import { TricolorBar } from "@/components/ui/TricolorBar";
+import { site } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Talk to the Patriot Media Entertainment team.",
+  description: `Talk to the ${site.name} team.`,
 };
 
 export default function ContactPage() {

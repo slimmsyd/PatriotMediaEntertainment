@@ -26,9 +26,12 @@ export function ContactRail() {
             Head Office
           </h3>
           <p className="m-0 text-[17px] leading-[1.55] text-muted">
-            {site.addressLines[0]}
-            <br />
-            {site.addressLines[1]}
+            {site.addressLines.map((line, i) => (
+              <span key={line}>
+                {i > 0 && <br />}
+                {line}
+              </span>
+            ))}
           </p>
         </div>
       </div>

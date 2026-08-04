@@ -1,13 +1,18 @@
 type TricolorBarProps = {
   height?: number;
+  width?: number | string;
   className?: string;
 };
 
-export function TricolorBar({ height = 4, className = "" }: TricolorBarProps) {
+export function TricolorBar({
+  height = 4,
+  width = "100%",
+  className = "",
+}: TricolorBarProps) {
   return (
     <div
-      className={`flex w-full ${className}`}
-      style={{ height }}
+      className={`flex ${className}`}
+      style={{ height, width }}
       aria-hidden="true"
     >
       <span className="flex-1 bg-navy" />

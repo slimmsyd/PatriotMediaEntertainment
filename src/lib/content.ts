@@ -1,23 +1,17 @@
-import {
-  EVENT_1_POSTER,
-  EVENT_1_VIDEO,
-  EVENT_2_POSTER,
-  EVENT_2_VIDEO,
-  EVENT_3_POSTER,
-  EVENT_3_VIDEO,
-  EVENT_4_POSTER,
-  EVENT_4_VIDEO,
-  EVENT_5_POSTER,
-  EVENT_5_VIDEO,
-} from "@/lib/media";
+import { EVENT_1_POSTER, EVENT_1_VIDEO } from "@/lib/media";
 
 export const site = {
-  name: "Patriot Media Entertainment",
-  wordmark: "PATRIOT MEDIA ENTERTAINMENT",
+  name: "Patriot Entertainment & Media Group",
+  wordmark: "PATRIOT ENTERTAINMENT & MEDIA GROUP",
+  // TODO(client): no new email provided with the rebrand copy — placeholders retained.
   email: "hello@patriotmedia.com",
   bookingsEmail: "bookings@patriotmedia.com",
-  phone: "(000) 000-0000",
-  addressLines: ["Street address", "City, State ZIP"],
+  phone: "540-990-7868",
+  addressLines: [
+    "General Washington Executive Center",
+    "2217 Princess Anne Street, Suite #401",
+    "Fredericksburg, VA 22401",
+  ],
   bookingsHours: "Mon–Fri, 9am–6pm ET",
 };
 
@@ -41,51 +35,74 @@ export const events = [
     video: EVENT_1_VIDEO,
     poster: EVENT_1_POSTER,
   },
-  {
-    id: "event-2",
-    title: "Our Breath",
-    eyebrow: "Folk",
-    placeholder: "Our Breath film",
-    video: EVENT_2_VIDEO,
-    poster: EVENT_2_POSTER,
-  },
-  {
-    id: "event-3",
-    title: "Kirk Franklin",
-    eyebrow: "Gospel",
-    placeholder: "Kirk Franklin live film",
-    video: EVENT_3_VIDEO,
-    poster: EVENT_3_POSTER,
-  },
-  {
-    id: "event-4",
-    title: "Miranda Lambert",
-    eyebrow: "Country",
-    placeholder: "Miranda Lambert live film",
-    video: EVENT_4_VIDEO,
-    poster: EVENT_4_POSTER,
-  },
-  {
-    id: "event-5",
-    title: "Nickelback",
-    eyebrow: "Rock",
-    placeholder: "Nickelback live film",
-    video: EVENT_5_VIDEO,
-    poster: EVENT_5_POSTER,
-  },
 ] as const;
 
 export const aboutCopy = {
-  eyebrow: "Our story",
-  titleLines: ["A story of", "American", "storytelling"],
-  body: "Patriot Media Entertainment builds live shows and film around the people and places that shape this country. Replace this paragraph with your own founding story.",
+  eyebrow: "Who we are",
+  title: "Born from a life in show business",
+  lead: "Patriot Entertainment & Media Group was born through the eyes of Reggie Randall-Sans, son of music icon Ida Sans, known for the hit records \"Sad Christmas\" and \"Darling, I Understand.\"",
+  detail: [
+    "As the son of one of music's biggest entertainers, Reggie was blessed to exemplify what show business is truly about, working alongside Rick James, The Ohio Players, Clarence Carter, and other legends of the industry.",
+    "Our vision is to create unforgettable live entertainment experiences, giving others the chance to feel the same excitement, inspiration, and joy Reggie has experienced throughout his years.",
+  ],
   cta: "Build with us",
   ctaHref: "/contact",
-  /** Cleaned founder / leadership photo — single image on the right of Our Story. */
+  /** Cleaned founder / leadership photo — single image on the right of Who We Are. */
   founderImage: "/images/about-founder.jpg",
   founderImageAlt:
-    "Patriot Media Entertainment leadership at a national event",
-};
+    "Reggie Randall-Sans, founder of Patriot Entertainment & Media Group",
+  founderName: "Reggie Randall-Sans",
+  founderRole: "Founder",
+} as const;
+
+/**
+ * "About" panel — full-bleed dark statement panel: company overview + the
+ * geography it covers. Sits above Who We Serve / Who We Are, owns id="about".
+ */
+export const whatWeAreCopy = {
+  headline: "Entertainment built for here and beyond",
+  body: "Patriot Entertainment & Media Group is an entertainment and media company with a focus on local entertainment in the DMV area (Washington D.C., Maryland, and Virginia) while building experiences that reach a national audience.",
+  marketMarkers: [
+    { label: "Washington D.C." },
+    { label: "Maryland" },
+    { label: "Virginia" },
+    { label: "National", emphasis: true },
+  ],
+} as const;
+
+/** "Who They Serve" — audience + the event types the company books for. */
+export const whoWeServeCopy = {
+  eyebrow: "Who we serve",
+  title: "Serving those who serve us",
+  body: "We're dedicated to serving military families and communities, bringing unforgettable live entertainment to the moments that matter most.",
+  cta: "Book an event",
+  ctaHref: "/contact",
+} as const;
+
+export const serviceTypes = [
+  { id: "weddings", label: "Weddings", qualifier: "Ceremony & reception" },
+  { id: "birthday-parties", label: "Birthday Parties", qualifier: "All ages" },
+  {
+    id: "community-events",
+    label: "Community Events",
+    qualifier: "Base & city-wide",
+  },
+  {
+    id: "corporate-events",
+    label: "Corporate Events",
+    qualifier: "Brand & agency",
+  },
+  {
+    id: "bar-mitzvahs",
+    label: "Bar Mitzvahs",
+    qualifier: "Family celebrations",
+  },
+  {
+    id: "management-consulting",
+    label: "Management & Consulting",
+    qualifier: "Strategy & operations",
+  },
+] as const;
 
 export const ctaCopy = {
   titleLines: ["Unlock the right stage", "with our team"],

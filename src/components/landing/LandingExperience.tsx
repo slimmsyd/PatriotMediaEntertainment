@@ -6,15 +6,12 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { LoadingOverlay } from "@/components/landing/LoadingOverlay";
 import { Hero } from "@/components/landing/Hero";
 import { EventsRail } from "@/components/landing/EventsRail";
+import { WhatWeAreSection } from "@/components/landing/WhatWeAreSection";
+import { WhoWeServeSection } from "@/components/landing/WhoWeServeSection";
 import { AboutSection } from "@/components/landing/AboutSection";
 import { CtaCard } from "@/components/landing/CtaCard";
 import { UpcomingEvents } from "@/components/landing/UpcomingEvents";
-import {
-  EVENT_1_VIDEO,
-  EVENT_2_VIDEO,
-  EVENT_3_VIDEO,
-  EVENT_4_VIDEO,
-} from "@/lib/media";
+import { EVENT_1_VIDEO } from "@/lib/media";
 import { prefetchVideo } from "@/lib/prefetchVideo";
 
 export function LandingExperience() {
@@ -29,11 +26,8 @@ export function LandingExperience() {
           onComplete={(t) => {
             setHeroStartAt(t);
             setHeroActive(true);
-            // Hero has the network; start warming event tile videos for the rail below
+            // Hero has the network; start warming the event tile video for the rail below
             prefetchVideo(EVENT_1_VIDEO);
-            prefetchVideo(EVENT_2_VIDEO);
-            prefetchVideo(EVENT_3_VIDEO);
-            prefetchVideo(EVENT_4_VIDEO);
           }}
           onGone={() => setShowLoader(false)}
         />
@@ -43,6 +37,8 @@ export function LandingExperience() {
       <main>
         <Hero startAt={heroStartAt} soundOn active={heroActive} />
         <EventsRail />
+        <WhatWeAreSection />
+        <WhoWeServeSection />
         <AboutSection />
         <div id="merch" className="scroll-mt-24" aria-hidden="true" />
         <CtaCard />

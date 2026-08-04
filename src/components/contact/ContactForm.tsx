@@ -9,7 +9,7 @@ import {
   type FormEvent,
   type KeyboardEvent,
 } from "react";
-import { contactSubjects } from "@/lib/content";
+import { contactSubjects, site } from "@/lib/content";
 import { CheckIcon, PaperPlaneIcon } from "@/components/ui/icons";
 
 const MAX_MESSAGE = 348;
@@ -285,8 +285,7 @@ export function ContactForm() {
           className="mt-0.5 h-5 w-5 accent-navy"
         />
         <span>
-          I agree to be contacted by Patriot Media Entertainment about my
-          enquiry.
+          I agree to be contacted by {site.name} about my enquiry.
         </span>
       </label>
       {errors.consent && <span className={errorClass}>{errors.consent}</span>}
@@ -307,7 +306,7 @@ export function ContactForm() {
         }`}
         aria-live="polite"
       >
-        Thanks — we&apos;ll be in touch shortly.
+        Thanks, we&apos;ll be in touch shortly.
       </span>
     </form>
   );

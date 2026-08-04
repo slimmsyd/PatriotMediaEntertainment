@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo } from "next/font/google";
+import { site } from "@/lib/content";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -9,13 +10,14 @@ const archivo = Archivo({
   display: "swap",
 });
 
+const description = `Live events and film production. ${site.name} builds shows and stories around the people and places that shape this country.`;
+
 export const metadata: Metadata = {
   title: {
-    default: "Patriot Media Entertainment",
-    template: "%s · Patriot Media Entertainment",
+    default: site.name,
+    template: `%s · ${site.name}`,
   },
-  description:
-    "Live events and film production. Patriot Media Entertainment builds shows and stories around the people and places that shape this country.",
+  description,
   icons: {
     icon: [
       { url: "/favicon.png", sizes: "32x32", type: "image/png" },
@@ -24,23 +26,21 @@ export const metadata: Metadata = {
     apple: [{ url: "/images/apple-touch-icon.png", sizes: "180x180" }],
   },
   openGraph: {
-    title: "Patriot Media Entertainment",
-    description:
-      "Live events and film production. Patriot Media Entertainment builds shows and stories around the people and places that shape this country.",
+    title: site.name,
+    description,
     images: [
       {
         url: "/images/og-brand.jpg",
         width: 1968,
         height: 528,
-        alt: "Patriot Media Entertainment",
+        alt: site.name,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Patriot Media Entertainment",
-    description:
-      "Live events and film production. Patriot Media Entertainment builds shows and stories around the people and places that shape this country.",
+    title: site.name,
+    description,
     images: ["/images/og-brand.jpg"],
   },
 };

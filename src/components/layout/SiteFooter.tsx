@@ -8,11 +8,8 @@ export function SiteFooter() {
       <div className="grid gap-[clamp(32px,4vw,72px)] min-[900px]:grid-cols-[minmax(300px,1.35fr)_repeat(3,minmax(150px,0.75fr))]">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-1">
-            <span className="text-[clamp(30px,3vw,46px)] font-extrabold tracking-[-0.02em] leading-none text-navy">
-              PATRIOT
-            </span>
-            <span className="text-[clamp(13px,1vw,16px)] font-bold tracking-[0.34em] uppercase text-near-black">
-              Media Entertainment
+            <span className="text-[clamp(22px,2.4vw,32px)] font-extrabold tracking-[-0.02em] leading-tight text-navy">
+              {site.wordmark}
             </span>
             <span className="mt-3 flex h-[3px] w-24" aria-hidden="true">
               <span className="flex-1 bg-navy" />
@@ -24,9 +21,12 @@ export function SiteFooter() {
             <div>
               <h3 className="mb-2 text-[19px] font-bold">Head Office</h3>
               <p className="m-0 text-base leading-[1.6] text-muted">
-                {site.addressLines[0]}
-                <br />
-                {site.addressLines[1]}
+                {site.addressLines.map((line, i) => (
+                  <span key={line}>
+                    {i > 0 && <br />}
+                    {line}
+                  </span>
+                ))}
               </p>
             </div>
             <div>
@@ -94,6 +94,14 @@ export function SiteFooter() {
           >
             Privacy
           </Link>
+          <a
+            href="https://www.0ncode.com/"
+            target="_blank"
+            rel="noreferrer"
+            className="text-[15px] font-semibold text-near-black pme-link-red pme-focus-ring"
+          >
+            Built by Oncode
+          </a>
           <button
             type="button"
             className="inline-flex items-center gap-2.5 rounded-[10px] border border-near-black/16 bg-transparent px-[18px] py-3 text-[15px] font-semibold text-near-black transition-colors duration-200 hover:border-red hover:text-red cursor-pointer pme-focus-ring"

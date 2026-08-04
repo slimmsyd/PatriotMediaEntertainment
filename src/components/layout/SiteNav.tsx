@@ -232,7 +232,7 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
           href="/#home"
           className="relative z-[51] max-w-[min(58vw,280px)] text-[12px] font-extrabold leading-tight tracking-[0.06em] uppercase text-white pme-focus-ring sm:max-w-none sm:text-[13px] sm:tracking-[0.1em]"
         >
-          Patriot Media Entertainment
+          {site.wordmark}
         </Link>
 
         <nav className="hidden items-center gap-[clamp(18px,2.4vw,40px)] text-[13px] font-semibold tracking-[0.16em] uppercase min-[901px]:flex">
