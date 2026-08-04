@@ -220,82 +220,88 @@ export function Hero({
       : "Hold the spacebar to start";
 
   return (
-    <section
-      id="home"
-      ref={sectionRef}
-      className="sticky top-0 z-[1] flex h-screen flex-col overflow-hidden bg-black will-change-transform"
-    >
-      <div className="h-[11vh] min-h-16 shrink-0" />
+    // Bounds how long the sticky hero can stay pinned — its containing block,
+    // not its own height, decides that. Without this wrapper `sticky` reads
+    // its height from <main> (which spans the whole page) and never releases,
+    // so the video keeps painting over every section below it while scrolling.
+    <div className="relative h-[185vh]">
+      <section
+        id="home"
+        ref={sectionRef}
+        className="sticky top-0 z-[1] flex h-screen flex-col overflow-hidden bg-black will-change-transform"
+      >
+        <div className="h-[11vh] min-h-16 shrink-0" />
 
-      <div className="relative min-h-0 flex-1 overflow-hidden bg-card-well">
-        <video
-          ref={videoRef}
-          className="absolute inset-0 h-full w-full object-cover"
-          src={SITE_BG_VIDEO}
-          loop
-          playsInline
-          preload="auto"
-          muted={muted}
-          aria-label="Hero background video"
-        />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, rgba(255,255,255,0.45) 1px, transparent 1.4px)",
-            backgroundSize: "96px 96px",
-            backgroundPosition: "48px 24px",
-          }}
-        />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 35%, rgba(0,0,0,0.45) 100%)",
-          }}
-        />
-
-        {/* Play / pause + mute controls */}
-        <div className="absolute right-[clamp(24px,3vw,52px)] top-[clamp(20px,4vh,40px)] z-10 flex items-center gap-3">
-          <button
-            type="button"
-            onClick={togglePlayPause}
-            aria-label={playing ? "Pause video" : "Play video"}
-            aria-pressed={!playing}
-            className="flex h-16 w-16 cursor-pointer items-center justify-center rounded-full bg-white text-black transition-colors duration-200 hover:bg-red hover:text-white pme-focus-ring"
-          >
-            <PlayPauseIcon playing={playing} />
-          </button>
-          <button
-            type="button"
-            onClick={toggleMute}
-            aria-label={muted ? "Unmute video" : "Mute video"}
-            aria-pressed={muted}
-            className="flex h-16 w-16 cursor-pointer items-center justify-center rounded-full bg-white text-black transition-colors duration-200 hover:bg-red hover:text-white pme-focus-ring"
-          >
-            <SpeakerIcon muted={muted} />
-          </button>
-        </div>
-
-        <p
-          className="pointer-events-none absolute right-[clamp(24px,6vw,110px)] bottom-[clamp(28px,6vh,64px)] m-0 text-[15px] font-semibold tracking-[0.14em] text-white uppercase"
-          aria-live="polite"
-        >
-          {statusText}
-        </p>
-
-        <div
-          className="pointer-events-none absolute right-[clamp(24px,12vw,200px)] bottom-[clamp(20px,4.4vh,46px)] left-[clamp(24px,12vw,200px)] h-px bg-white/18"
-          aria-hidden={playing}
-        >
-          <div
-            ref={holdBarRef}
-            className="h-full w-full origin-left scale-x-0 bg-white"
+        <div className="relative min-h-0 flex-1 overflow-hidden bg-card-well">
+          <video
+            ref={videoRef}
+            className="absolute inset-0 h-full w-full object-cover"
+            src={SITE_BG_VIDEO}
+            loop
+            playsInline
+            preload="auto"
+            muted={muted}
+            aria-label="Hero background video"
           />
-        </div>
-      </div>
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle, rgba(255,255,255,0.45) 1px, transparent 1.4px)",
+              backgroundSize: "96px 96px",
+              backgroundPosition: "48px 24px",
+            }}
+          />
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 35%, rgba(0,0,0,0.45) 100%)",
+            }}
+          />
 
-      <div className="h-[9vh] min-h-12 shrink-0" />
-    </section>
+          {/* Play / pause + mute controls */}
+          <div className="absolute right-[clamp(24px,3vw,52px)] top-[clamp(20px,4vh,40px)] z-10 flex items-center gap-3">
+            <button
+              type="button"
+              onClick={togglePlayPause}
+              aria-label={playing ? "Pause video" : "Play video"}
+              aria-pressed={!playing}
+              className="flex h-16 w-16 cursor-pointer items-center justify-center rounded-full bg-white text-black transition-colors duration-200 hover:bg-red hover:text-white pme-focus-ring"
+            >
+              <PlayPauseIcon playing={playing} />
+            </button>
+            <button
+              type="button"
+              onClick={toggleMute}
+              aria-label={muted ? "Unmute video" : "Mute video"}
+              aria-pressed={muted}
+              className="flex h-16 w-16 cursor-pointer items-center justify-center rounded-full bg-white text-black transition-colors duration-200 hover:bg-red hover:text-white pme-focus-ring"
+            >
+              <SpeakerIcon muted={muted} />
+            </button>
+          </div>
+
+          <p
+            className="pointer-events-none absolute right-[clamp(24px,6vw,110px)] bottom-[clamp(28px,6vh,64px)] m-0 text-[15px] font-semibold tracking-[0.14em] text-white uppercase"
+            aria-live="polite"
+          >
+            {statusText}
+          </p>
+
+          <div
+            className="pointer-events-none absolute right-[clamp(24px,12vw,200px)] bottom-[clamp(20px,4.4vh,46px)] left-[clamp(24px,12vw,200px)] h-px bg-white/18"
+            aria-hidden={playing}
+          >
+            <div
+              ref={holdBarRef}
+              className="h-full w-full origin-left scale-x-0 bg-white"
+            />
+          </div>
+        </div>
+
+        <div className="h-[9vh] min-h-12 shrink-0" />
+      </section>
+    </div>
   );
 }
