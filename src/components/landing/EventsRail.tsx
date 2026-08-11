@@ -199,43 +199,101 @@ export function EventsRail() {
           ref={trackRef}
           className="pme-events-track flex gap-[clamp(24px,3vw,56px)] px-[clamp(24px,4vw,72px)] will-change-transform max-[900px]:w-max"
         >
-          {events.map((event) =>
-            event.kind === "film" ? (
-              <article
-                key={event.id}
-                className="relative h-[82vh] w-[min(72vw,1180px)] shrink-0 overflow-hidden rounded-[26px] bg-card-well max-[900px]:h-[70vh] max-[900px]:w-[86vw]"
-              >
-                <div
-                  className="absolute inset-0 bg-card-well bg-cover bg-center"
-                  style={{ backgroundImage: `url(${event.poster})` }}
-                  aria-hidden="true"
-                />
-                <InViewVideo
-                  src={event.video}
-                  poster={event.poster}
-                  className="pointer-events-none absolute inset-0 h-full w-full object-cover max-[900px]:pointer-events-none"
-                  aria-label={event.title}
-                  loadRootMargin="160% 0px 160% 0px"
-                />
-                <div
-                  className="pointer-events-none absolute inset-0"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.72) 100%)",
-                  }}
-                />
-                <div className="pointer-events-none absolute bottom-[clamp(28px,4vh,54px)] left-[clamp(24px,3vw,52px)] flex flex-col gap-1.5 text-white">
-                  <span className="text-[15px] font-bold tracking-[0.04em]">
-                    {event.eyebrow}
-                  </span>
-                  <h2 className="m-0 text-[clamp(38px,4.6vw,84px)] font-extrabold leading-[0.94] tracking-[-0.02em] text-pretty">
-                    {event.title}
-                  </h2>
-                </div>
-              </article>
-            ) : (
-              /* Flyers carry their own typography, so the caption sits below
-                 the artwork instead of overlaying and fighting it. */
+          {events.map((event) => {
+            if (event.kind === "film") {
+              return (
+                <article
+                  key={event.id}
+                  className="relative h-[82vh] w-[min(72vw,1180px)] shrink-0 overflow-hidden rounded-[26px] bg-card-well max-[900px]:h-[70vh] max-[900px]:w-[86vw]"
+                >
+                  <div
+                    className="absolute inset-0 bg-card-well bg-cover bg-center"
+                    style={{ backgroundImage: `url(${event.poster})` }}
+                    aria-hidden="true"
+                  />
+                  <InViewVideo
+                    src={event.video}
+                    poster={event.poster}
+                    className="pointer-events-none absolute inset-0 h-full w-full object-cover max-[900px]:pointer-events-none"
+                    aria-label={event.title}
+                    loadRootMargin="160% 0px 160% 0px"
+                  />
+                  <div
+                    className="pointer-events-none absolute inset-0"
+                    style={{
+                      background:
+                        "linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.72) 100%)",
+                    }}
+                  />
+                  <div className="pointer-events-none absolute bottom-[clamp(28px,4vh,54px)] left-[clamp(24px,3vw,52px)] flex flex-col gap-1.5 text-white">
+                    <span className="text-[15px] font-bold tracking-[0.04em]">
+                      {event.eyebrow}
+                    </span>
+                    <h2 className="m-0 text-[clamp(38px,4.6vw,84px)] font-extrabold leading-[0.94] tracking-[-0.02em] text-pretty">
+                      {event.title}
+                    </h2>
+                  </div>
+                </article>
+              );
+            }
+
+            if (event.kind === "duo") {
+              /* Moment + proof: live footage beside the ceremonial still,
+                 joined by a brand-red seam so the pair reads as one story. */
+              return (
+                <article
+                  key={event.id}
+                  className="flex h-[82vh] w-[min(88vw,1320px)] shrink-0 flex-col overflow-hidden rounded-[26px] bg-card-well max-[900px]:h-[70vh] max-[900px]:w-[90vw]"
+                >
+                  <div className="grid min-h-0 flex-1 grid-cols-2 gap-px bg-red">
+                    <div className="relative min-h-0 overflow-hidden bg-card-well">
+                      <div
+                        className="absolute inset-0 bg-cover bg-center"
+                        style={{ backgroundImage: `url(${event.poster})` }}
+                        aria-hidden="true"
+                      />
+                      <InViewVideo
+                        src={event.video}
+                        poster={event.poster}
+                        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+                        aria-label={`${event.title} event footage`}
+                        loadRootMargin="160% 0px 160% 0px"
+                      />
+                    </div>
+                    <div className="relative min-h-0 overflow-hidden bg-card-well">
+                      <div
+                        className="absolute inset-0 scale-110 bg-cover bg-center blur-2xl brightness-[0.4]"
+                        style={{ backgroundImage: `url(${event.image})` }}
+                        aria-hidden="true"
+                      />
+                      <Image
+                        src={event.image}
+                        alt={event.imageAlt}
+                        fill
+                        sizes="(max-width: 900px) 45vw, 44vw"
+                        className="object-cover"
+                        draggable={false}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex shrink-0 flex-col gap-1.5 bg-black px-[clamp(20px,2.4vw,34px)] py-[clamp(18px,2.2vh,26px)] text-white">
+                    <span className="text-[14px] font-bold tracking-[0.04em] text-white/70">
+                      {event.eyebrow}
+                    </span>
+                    <h2 className="m-0 text-[clamp(26px,2.6vw,42px)] font-extrabold leading-[1.02] tracking-[-0.02em] text-pretty">
+                      {event.title}
+                    </h2>
+                    <p className="m-0 text-[clamp(13px,0.95vw,15px)] font-medium text-white/65">
+                      {event.meta}
+                    </p>
+                  </div>
+                </article>
+              );
+            }
+
+            /* Flyers carry their own typography, so the caption sits below
+               the artwork instead of overlaying and fighting it. */
+            return (
               <article
                 key={event.id}
                 className="flex h-[82vh] w-[min(46vw,720px)] shrink-0 flex-col overflow-hidden rounded-[26px] bg-card-well max-[900px]:h-[70vh] max-[900px]:w-[76vw]"
@@ -268,8 +326,8 @@ export function EventsRail() {
                   </p>
                 </div>
               </article>
-            ),
-          )}
+            );
+          })}
         </div>
       </div>
     </section>

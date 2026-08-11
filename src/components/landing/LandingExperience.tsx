@@ -16,6 +16,7 @@ import {
   EVENT_2_VIDEO,
   EVENT_3_VIDEO,
   EVENT_4_VIDEO,
+  WOUNDED_WARRIORS_VIDEO,
 } from "@/lib/media";
 import { prefetchVideo } from "@/lib/prefetchVideo";
 
@@ -32,6 +33,7 @@ export function LandingExperience() {
             setHeroStartAt(t);
             setHeroActive(true);
             // Hero has the network; start warming event tile videos for the rail below
+            prefetchVideo(WOUNDED_WARRIORS_VIDEO);
             prefetchVideo(EVENT_1_VIDEO);
             prefetchVideo(EVENT_2_VIDEO);
             prefetchVideo(EVENT_3_VIDEO);

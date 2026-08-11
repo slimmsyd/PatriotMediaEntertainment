@@ -41,6 +41,15 @@ export const EVENT_5_VIDEO = "/videos/event-5.mp4";
 /** Still frame / title card for event-5. */
 export const EVENT_5_POSTER = "/images/event-5-poster.jpg";
 
+/** Wounded Warriors duo rail — event footage. */
+export const WOUNDED_WARRIORS_VIDEO = "/videos/wounded-warriors.mp4";
+
+/** Still frame while wounded-warriors video buffers. */
+export const WOUNDED_WARRIORS_POSTER = "/images/wounded-warriors-poster.jpg";
+
+/** Ceremonial check photo paired with the footage. */
+export const WOUNDED_WARRIORS_IMAGE = "/images/wounded-warriors.jpg";
+
 /** Locked brand logo graphic (Image #2). */
 export const BRAND_LOGO = "/images/brand-logo.png";
 

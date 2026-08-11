@@ -9,6 +9,9 @@ import {
   EVENT_4_VIDEO,
   EVENT_5_POSTER,
   EVENT_5_VIDEO,
+  WOUNDED_WARRIORS_IMAGE,
+  WOUNDED_WARRIORS_POSTER,
+  WOUNDED_WARRIORS_VIDEO,
 } from "@/lib/media";
 
 export const site = {
@@ -30,9 +33,10 @@ export const navLinks = [
 ] as const;
 
 /**
- * Past-events rail. Two shapes: showcase films (`kind: "film"`, full-bleed
- * video) and real event flyers (`kind: "flyer"`, portrait artwork shown whole
- * against a blurred fill of itself).
+ * Past-events rail. Three shapes: showcase films (`kind: "film"`, full-bleed
+ * video), real event flyers (`kind: "flyer"`, portrait artwork shown whole
+ * against a blurred fill of itself), and duo showcases (`kind: "duo"`, live
+ * footage paired with a still — moment + proof in one tile).
  */
 export type PastEvent =
   | {
@@ -52,9 +56,33 @@ export type PastEvent =
       meta: string;
       image: string;
       imageAlt: string;
+    }
+  | {
+      kind: "duo";
+      id: string;
+      title: string;
+      eyebrow: string;
+      /** Date + partners / impact line under the title. */
+      meta: string;
+      video: string;
+      poster: string;
+      image: string;
+      imageAlt: string;
     };
 
 export const events: readonly PastEvent[] = [
+  {
+    kind: "duo",
+    id: "wounded-warriors",
+    title: "Wounded Warriors Event",
+    eyebrow: "Benefit",
+    meta: "Sat. June 3 · $1,000 to Wounded Warrior Project · Mothers & Fathers Against Crime",
+    video: WOUNDED_WARRIORS_VIDEO,
+    poster: WOUNDED_WARRIORS_POSTER,
+    image: WOUNDED_WARRIORS_IMAGE,
+    imageAlt:
+      "Group presenting a ceremonial $1,000 check to the Wounded Warrior Project from Mothers and Fathers Against Crime at an outdoor fundraising event",
+  },
   {
     kind: "flyer",
     id: "prayer-candlelight-vigil",
