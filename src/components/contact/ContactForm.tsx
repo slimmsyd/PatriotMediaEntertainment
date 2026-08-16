@@ -21,6 +21,8 @@ export function ContactForm() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [messageLen, setMessageLen] = useState(0);
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -72,8 +74,10 @@ export function ContactForm() {
     }
   };
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (sending || sent) return;
+
     const form = e.currentTarget;
     const data = new FormData(form);
     const next: Record<string, string> = {};
@@ -81,18 +85,53 @@ export function ContactForm() {
     const lastName = String(data.get("lastName") ?? "").trim();
     const firstName = String(data.get("firstName") ?? "").trim();
     const organization = String(data.get("organization") ?? "").trim();
+    const email = String(data.get("email") ?? "").trim();
+    const phone = String(data.get("phone") ?? "").trim();
+    const message = String(data.get("message") ?? "").trim();
     const consent = data.get("consent");
 
     if (!subject) next.subject = "Subject is required.";
     if (!lastName) next.lastName = "Last name is required.";
     if (!firstName) next.firstName = "First name is required.";
     if (!organization) next.organization = "Organization is required.";
+    if (!email) next.email = "Email is required.";
     if (!consent) next.consent = "Consent is required.";
 
     setErrors(next);
+    setSubmitError("");
     if (Object.keys(next).length > 0) return;
 
-    setSent(true);
+    setSending(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subject,
+          lastName,
+          firstName,
+          organization,
+          email,
+          phone,
+          message,
+          consent: true,
+        }),
+      });
+      const payload = (await res.json().catch(() => ({}))) as {
+        errors?: Record<string, string>;
+        error?: string;
+      };
+      if (!res.ok) {
+        if (payload.errors) setErrors(payload.errors);
+        setSubmitError(payload.error ?? "Could not send your message. Please try again.");
+        return;
+      }
+      setSent(true);
+    } catch {
+      setSubmitError("Could not send your message. Please try again.");
+    } finally {
+      setSending(false);
+    }
   };
 
   const fieldClass =
@@ -231,8 +270,16 @@ export function ContactForm() {
       </label>
 
       <label className="flex flex-col gap-2.5">
-        <span className={labelClass}>Email</span>
-        <input name="email" type="email" className={fieldClass} />
+        <span className={labelClass}>
+          Email<span className="text-red">*</span>
+        </span>
+        <input
+          name="email"
+          type="email"
+          required
+          className={`${fieldClass} ${errors.email ? "border-red" : ""}`}
+        />
+        {errors.email && <span className={errorClass}>{errors.email}</span>}
       </label>
 
       <label className="flex flex-col gap-2.5">
@@ -290,11 +337,14 @@ export function ContactForm() {
       </label>
       {errors.consent && <span className={errorClass}>{errors.consent}</span>}
 
+      {submitError && <span className={errorClass}>{submitError}</span>}
+
       <button
         type="submit"
-        className="inline-flex cursor-pointer items-center gap-3.5 self-start rounded-xl bg-navy py-[18px] pr-[18px] pl-[34px] text-base font-semibold tracking-[0.14em] text-white uppercase transition-colors duration-200 hover:bg-red pme-focus-ring"
+        disabled={sending || sent}
+        className="inline-flex cursor-pointer items-center gap-3.5 self-start rounded-xl bg-navy py-[18px] pr-[18px] pl-[34px] text-base font-semibold tracking-[0.14em] text-white uppercase transition-colors duration-200 hover:bg-red pme-focus-ring disabled:cursor-not-allowed disabled:opacity-60"
       >
-        Send
+        {sending ? "Sending" : "Send"}
         <span className="inline-flex h-[38px] w-[38px] items-center justify-center rounded-[9px] bg-white/22">
           <PaperPlaneIcon />
         </span>
