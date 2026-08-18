@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { footerColumns, site } from "@/lib/content";
 import { InstagramIcon, YouTubeIcon } from "@/components/ui/icons";
+import { openDonate } from "@/components/donate/openDonate";
 
 export function SiteFooter() {
   return (
@@ -52,6 +55,7 @@ export function SiteFooter() {
               {link.label}
             </Link>
           ))}
+          <FooterDonateLink />
           <div className="mt-1 flex gap-3">
             <a
               href="https://instagram.com"
@@ -118,6 +122,18 @@ export function SiteFooter() {
         </div>
       </div>
     </footer>
+  );
+}
+
+function FooterDonateLink() {
+  return (
+    <button
+      type="button"
+      onClick={openDonate}
+      className="self-start text-left text-base text-near-black pme-link-red pme-focus-ring cursor-pointer bg-transparent p-0"
+    >
+      Donate
+    </button>
   );
 }
 

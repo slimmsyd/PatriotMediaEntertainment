@@ -8,6 +8,7 @@ import { Hero } from "@/components/landing/Hero";
 import { EventsRail } from "@/components/landing/EventsRail";
 import { WhatWeAreSection } from "@/components/landing/WhatWeAreSection";
 import { WhoWeServeSection } from "@/components/landing/WhoWeServeSection";
+import { DonateBand } from "@/components/landing/DonateBand";
 import { AboutSection } from "@/components/landing/AboutSection";
 import { CtaCard } from "@/components/landing/CtaCard";
 import { UpcomingEvents } from "@/components/landing/UpcomingEvents";
@@ -49,6 +50,7 @@ export function LandingExperience() {
         <EventsRail />
         <WhatWeAreSection />
         <WhoWeServeSection />
+        <DonateBand />
         <AboutSection />
         <CtaCard />
         <UpcomingEvents />

@@ -17,6 +17,8 @@
   --navy: #1b4fa8;
   --navy-dark: #16407f;
   --red: #c1272d;
+  /* Darkened red for hover on red-primary buttons (red-on-red reads as dead). */
+  --red-dark: #9c1f24;
   --ease-enter: cubic-bezier(0.22, 0.61, 0.36, 1);
   --background: var(--black);
   --foreground: var(--white);
@@ -41,6 +43,7 @@
   --color-navy: var(--navy);
   --color-navy-dark: var(--navy-dark);
   --color-red: var(--red);
+  --color-red-dark: var(--red-dark);
   --font-sans: var(--font-archivo);
 }
 
@@ -103,6 +106,22 @@ select {
 .pme-focus-ring:focus-visible {
   outline: 2px solid var(--navy);
   outline-offset: 3px;
+}
+
+/* Host for the official PayPal Donate SDK button. Kept in the tree (not
+   display:none) so a programmatic click still opens the donate popup. */
+.pme-paypal-host {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  pointer-events: none;
 }
 
 /* Patriotic red hover for text + nav links */
