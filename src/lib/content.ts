@@ -33,6 +33,19 @@ export const navLinks = [
 ] as const;
 
 /**
+ * PayPal donate CTA. The hosted button id / business value live in
+ * NEXT_PUBLIC_PAYPAL_DONATE_* so the Donate SDK can open a popup without
+ * leaving the site.
+ */
+export const donate = {
+  label: "Donate",
+  ariaLabel: "Donate through PayPal — opens a donation window",
+  blurb:
+    "We put on benefit events for military families. Your contribution pays for the next one.",
+  itemName: "Benefit events for military families",
+} as const;
+
+/**
  * Past-events rail. Three shapes: showcase films (`kind: "film"`, full-bleed
  * video), real event flyers (`kind: "flyer"`, portrait artwork shown whole
  * against a blurred fill of itself), and duo showcases (`kind: "duo"`, live

@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { navLinks, site } from "@/lib/content";
 import { ChipButton } from "@/components/ui/ChipButton";
+import { DonateButton } from "@/components/donate/DonateButton";
 import { CloseIcon } from "@/components/ui/icons";
 
 gsap.registerPlugin(useGSAP);
@@ -203,7 +204,7 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
       {/* Top navigation bar */}
       <header
         ref={headerRef}
-        className="fixed top-0 right-0 left-0 z-[50] flex h-[11vh] min-h-16 items-center justify-between px-[clamp(24px,4vw,72px)] text-white will-change-transform"
+        className="fixed top-0 right-0 left-0 z-[50] flex h-[11vh] min-h-16 items-center justify-between gap-3 px-[clamp(24px,4vw,72px)] text-white will-change-transform"
         style={{
           // Hide-on-scroll (separate from cinematic GSAP scale)
           opacity: hidden && !menuOpen ? 0 : undefined,
@@ -230,7 +231,7 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
       >
         <Link
           href="/#home"
-          className="relative z-[51] max-w-[min(58vw,280px)] text-[12px] font-extrabold leading-tight tracking-[0.06em] uppercase text-white pme-focus-ring sm:max-w-none sm:text-[13px] sm:tracking-[0.1em]"
+          className="relative z-[51] max-w-[min(44vw,280px)] text-[12px] font-extrabold leading-tight tracking-[0.06em] uppercase text-white pme-focus-ring sm:max-w-none sm:text-[13px] sm:tracking-[0.1em]"
         >
           {site.wordmark}
         </Link>
@@ -245,33 +246,39 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
               {link.label}
             </Link>
           ))}
+          <DonateButton className="h-[50px] px-[26px] text-[13px] tracking-[0.16em] uppercase" />
           <ChipButton
             href="/contact"
-            className="py-2.5 pr-2.5 pl-[22px] text-[13px] tracking-[0.16em] uppercase hover:bg-red"
+            className="py-2.5 pr-2.5 pl-[22px] text-[13px] tracking-[0.16em] uppercase"
             chip="›"
           >
             Contact
           </ChipButton>
         </nav>
 
-        {/* Mobile header toggle — open AND close */}
-        <button
-          type="button"
-          className="relative z-[51] inline-flex h-11 w-11 items-center justify-center rounded-lg min-[901px]:hidden pme-focus-ring cursor-pointer"
-          aria-label={menuOpen ? "Close navigation" : "Open navigation"}
-          aria-expanded={menuOpen}
-          aria-controls="site-menu-panel"
-          onClick={toggleMenu}
-        >
-          {menuOpen ? (
-            <CloseIcon className="h-5 w-5 text-white" />
-          ) : (
-            <span className="flex flex-col gap-[5px]" aria-hidden="true">
-              <span className="block h-[2px] w-[18px] rounded-full bg-white" />
-              <span className="block h-[2px] w-[18px] rounded-full bg-white" />
-            </span>
+        {/* Mobile: Donate stays on the bar — burying a donate CTA in a menu kills it */}
+        <div className="relative z-[51] flex items-center gap-2 min-[901px]:hidden">
+          {!menuOpen && (
+            <DonateButton className="h-11 px-4 text-[12px] tracking-[0.14em] uppercase" />
           )}
-        </button>
+          <button
+            type="button"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-lg pme-focus-ring cursor-pointer"
+            aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={menuOpen}
+            aria-controls="site-menu-panel"
+            onClick={toggleMenu}
+          >
+            {menuOpen ? (
+              <CloseIcon className="h-5 w-5 text-white" />
+            ) : (
+              <span className="flex flex-col gap-[5px]" aria-hidden="true">
+                <span className="block h-[2px] w-[18px] rounded-full bg-white" />
+                <span className="block h-[2px] w-[18px] rounded-full bg-white" />
+              </span>
+            )}
+          </button>
+        </div>
       </header>
 
       {/* Fixed bottom Menu pill — always above the panel */}
@@ -336,7 +343,11 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
             ))}
           </nav>
 
-          <div className="mt-8">
+          <div className="mt-8 flex flex-wrap gap-3">
+            <DonateButton
+              className="h-[58px] px-7 text-[14px] tracking-[0.14em] uppercase"
+              onClick={closeMenu}
+            />
             <ChipButton
               href="/contact"
               className="py-3.5 pr-3.5 pl-7 text-[14px] tracking-[0.14em] uppercase"
