@@ -171,7 +171,7 @@ export const events: readonly PastEvent[] = [
 export const aboutCopy = {
   eyebrow: "Who we are",
   title: "Born from a life in show business",
-  lead: "Patriot Entertainment & Media Group was born through the eyes of Reggie Randall-Sans, son of music icon Ida Sans, known for the hit records \"Sad Christmas\" and \"Darling, I Understand.\"",
+  lead: "Patriot Entertainment & Media Group was born through the eyes of Reggie Randall-Sands, son of music icon Ida Sands, known for the hit records \"Sad Christmas\" and \"Darling, I Understand.\"",
   detail: [
     "As the son of one of music's biggest entertainers, Reggie was blessed to exemplify what show business is truly about, working alongside Rick James, The Ohio Players, Clarence Carter, and other legends of the industry.",
     "Our vision is to create unforgettable live entertainment experiences, giving others the chance to feel the same excitement, inspiration, and joy Reggie has experienced throughout his years.",
@@ -181,8 +181,8 @@ export const aboutCopy = {
   /** Founder portrait — single image on the right of Who We Are. */
   founderImage: "/images/reggie.jpg",
   founderImageAlt:
-    "Reggie Randall-Sans, founder of Patriot Entertainment & Media Group",
-  founderName: "Reggie Randall-Sans",
+    "Reggie Randall-Sands, founder of Patriot Entertainment & Media Group",
+  founderName: "Reggie Randall-Sands",
   founderRole: "Founder",
 } as const;
 
