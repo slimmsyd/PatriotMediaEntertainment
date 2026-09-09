@@ -3,12 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { site } from "@/lib/content-defaults";
+import { site as defaultSite } from "@/lib/content-defaults";
 import { LOADER_BG_VIDEO, SITE_BG_VIDEO } from "@/lib/media";
 
 gsap.registerPlugin(useGSAP);
 
-const WORDMARK = site.wordmark;
+const WORDMARK = defaultSite.wordmark;
 const DURATION = 1.5;
 const START_DELAY = 0.2;
 const TYPE_DURATION = Math.max(0.4, DURATION - START_DELAY);

@@ -1,7 +1,12 @@
-import { site } from "@/lib/content-defaults";
+import { site as defaultSite } from "@/lib/content-defaults";
+import type { SiteCopyValue } from "@/lib/cms/schemas";
 import { PinIcon } from "@/components/ui/icons";
 
-export function ContactRail() {
+type ContactRailProps = {
+  site?: SiteCopyValue;
+};
+
+export function ContactRail({ site = defaultSite }: ContactRailProps) {
   return (
     <aside className="flex flex-col gap-[clamp(28px,4vh,44px)]">
       <div className="flex gap-[18px]">

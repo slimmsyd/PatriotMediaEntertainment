@@ -9,12 +9,20 @@ import {
   type FormEvent,
   type KeyboardEvent,
 } from "react";
-import { contactSubjects, site } from "@/lib/content-defaults";
+import {
+  contactSubjects,
+  site as defaultSite,
+} from "@/lib/content-defaults";
+import type { SiteCopyValue } from "@/lib/cms/schemas";
 import { CheckIcon, PaperPlaneIcon } from "@/components/ui/icons";
 
 const MAX_MESSAGE = 348;
 
-export function ContactForm() {
+type ContactFormProps = {
+  site?: SiteCopyValue;
+};
+
+export function ContactForm({ site = defaultSite }: ContactFormProps) {
   const listboxId = useId();
   const [subject, setSubject] = useState<string>(contactSubjects[0]);
   const [open, setOpen] = useState(false);

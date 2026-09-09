@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ctaCopy, partnerLogos } from "@/lib/content-defaults";
+import type { CtaCopyValue } from "@/lib/cms/schemas";
 import { FLAG_BG_VIDEO, FLAG_POSTER } from "@/lib/media";
 import { ChevronRightIcon } from "@/components/ui/icons";
 import { TricolorBar } from "@/components/ui/TricolorBar";
@@ -13,7 +14,11 @@ import { InViewVideo } from "@/components/ui/InViewVideo";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-export function CtaCard() {
+type CtaCardProps = {
+  copy?: CtaCopyValue;
+};
+
+export function CtaCard({ copy = ctaCopy }: CtaCardProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const logosRef = useRef<HTMLDivElement>(null);
@@ -124,7 +129,7 @@ export function CtaCard() {
     { scope: sectionRef },
   );
 
-  const buttonChars = ctaCopy.button.split("");
+  const buttonChars = copy.button.split("");
 
   return (
     <section
@@ -189,7 +194,7 @@ export function CtaCard() {
           ref={headlineRef}
           className="relative z-[1] m-0 max-w-[24ch] text-center text-[clamp(30px,3.3vw,56px)] font-medium leading-[1.14] tracking-[-0.02em] text-pretty opacity-0"
         >
-          {ctaCopy.titleLines.map((line) => (
+          {copy.titleLines.map((line) => (
             <span key={line} className="block">
               {line}
             </span>

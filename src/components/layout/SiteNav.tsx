@@ -4,7 +4,12 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { navLinks, site } from "@/lib/content-defaults";
+import {
+  navLinks,
+  donate as defaultDonate,
+  site as defaultSite,
+} from "@/lib/content-defaults";
+import type { DonateCopyValue, SiteCopyValue } from "@/lib/cms/schemas";
 import { ChipButton } from "@/components/ui/ChipButton";
 import { DonateButton } from "@/components/donate/DonateButton";
 import { CloseIcon } from "@/components/ui/icons";
@@ -13,12 +18,18 @@ gsap.registerPlugin(useGSAP);
 
 type SiteNavProps = {
   variant?: "landing" | "contact";
+  site?: SiteCopyValue;
+  donate?: DonateCopyValue;
 };
 
 /** How far into the page (vh) counts as “still watching the hero”. */
 const HERO_CINEMA_END = 0.42;
 
-export function SiteNav({ variant = "landing" }: SiteNavProps) {
+export function SiteNav({
+  variant = "landing",
+  site = defaultSite,
+  donate = defaultDonate,
+}: SiteNavProps) {
   const headerRef = useRef<HTMLElement>(null);
   const pillRef = useRef<HTMLButtonElement>(null);
   const cinemaTween = useRef<gsap.core.Timeline | null>(null);
@@ -246,7 +257,7 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
               {link.label}
             </Link>
           ))}
-          <DonateButton className="h-[50px] px-[26px] text-[13px] tracking-[0.16em] uppercase" />
+          <DonateButton copy={donate} className="h-[50px] px-[26px] text-[13px] tracking-[0.16em] uppercase" />
           <ChipButton
             href="/contact"
             className="py-2.5 pr-2.5 pl-[22px] text-[13px] tracking-[0.16em] uppercase"
@@ -259,7 +270,7 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
         {/* Mobile: Donate stays on the bar — burying a donate CTA in a menu kills it */}
         <div className="relative z-[51] flex items-center gap-2 min-[901px]:hidden">
           {!menuOpen && (
-            <DonateButton className="h-11 px-4 text-[12px] tracking-[0.14em] uppercase" />
+            <DonateButton copy={donate} className="h-11 px-4 text-[12px] tracking-[0.14em] uppercase" />
           )}
           <button
             type="button"
@@ -345,6 +356,7 @@ export function SiteNav({ variant = "landing" }: SiteNavProps) {
 
           <div className="mt-8 flex flex-wrap gap-3">
             <DonateButton
+              copy={donate}
               className="h-[58px] px-7 text-[14px] tracking-[0.14em] uppercase"
               onClick={closeMenu}
             />

@@ -13,8 +13,17 @@ import {
   WOUNDED_WARRIORS_POSTER,
   WOUNDED_WARRIORS_VIDEO,
 } from "@/lib/media";
+import type {
+  AboutCopyValue,
+  CtaCopyValue,
+  DonateCopyValue,
+  SiteCopyValue,
+  UpcomingCopyValue,
+  WhatWeAreCopyValue,
+  WhoWeServeCopyValue,
+} from "@/lib/cms/schemas";
 
-export const site = {
+export const site: SiteCopyValue = {
   name: "Patriot Entertainment & Media Group",
   wordmark: "PATRIOT ENTERTAINMENT & MEDIA GROUP",
   phone: "540-990-7868",
@@ -37,13 +46,13 @@ export const navLinks = [
  * NEXT_PUBLIC_PAYPAL_DONATE_* so the Donate SDK can open a popup without
  * leaving the site.
  */
-export const donate = {
+export const donate: DonateCopyValue = {
   label: "Donate",
   ariaLabel: "Donate through PayPal — opens a donation window",
   blurb:
     "We put on benefit events for military families. Your contribution pays for the next one.",
   itemName: "Benefit events for military families",
-} as const;
+};
 
 /**
  * Past-events rail. Three shapes: showcase films (`kind: "film"`, full-bleed
@@ -168,7 +177,7 @@ export const events: readonly PastEvent[] = [
   },
 ];
 
-export const aboutCopy = {
+export const aboutCopy: AboutCopyValue = {
   eyebrow: "Who we are",
   title: "Born from a life in show business",
   lead: "Patriot Entertainment & Media Group was born through the eyes of Reggie Randall-Sands, son of music icon Ida Sands, known for the hit records \"Sad Christmas\" and \"Darling, I Understand.\"",
@@ -184,13 +193,13 @@ export const aboutCopy = {
     "Reggie Randall-Sands, founder of Patriot Entertainment & Media Group",
   founderName: "Reggie Randall-Sands",
   founderRole: "Founder",
-} as const;
+};
 
 /**
  * "About" panel — full-bleed dark statement panel: company overview + the
  * geography it covers. Sits above Who We Serve / Who We Are, owns id="about".
  */
-export const whatWeAreCopy = {
+export const whatWeAreCopy: WhatWeAreCopyValue = {
   headline: "Entertainment built for here and beyond",
   body: "Patriot Entertainment & Media Group is an entertainment and media company with a focus on local entertainment in the DMV area (Washington D.C., Maryland, and Virginia) while building experiences that reach a national audience.",
   marketMarkers: [
@@ -199,16 +208,16 @@ export const whatWeAreCopy = {
     { label: "Virginia" },
     { label: "National", emphasis: true },
   ],
-} as const;
+};
 
 /** "Who They Serve" — audience + the event types the company books for. */
-export const whoWeServeCopy = {
+export const whoWeServeCopy: WhoWeServeCopyValue = {
   eyebrow: "Who we serve",
   title: "Serving those who serve us",
   body: "We're dedicated to serving military families and communities, bringing unforgettable live entertainment to the moments that matter most.",
   cta: "Book an event",
   ctaHref: "/contact",
-} as const;
+};
 
 export const serviceTypes = [
   { id: "weddings", label: "Weddings", qualifier: "Ceremony & reception" },
@@ -235,7 +244,7 @@ export const serviceTypes = [
   },
 ] as const;
 
-export const ctaCopy = {
+export const ctaCopy: CtaCopyValue = {
   titleLines: ["Unlock the right stage", "with our team"],
   button: "Contact us",
 };
@@ -303,7 +312,7 @@ export const upcomingEvents: readonly UpcomingEvent[] = [
   },
 ];
 
-export const upcomingCopy = {
+export const upcomingCopy: UpcomingCopyValue = {
   eyebrow: "Events",
   title: "Discover our upcoming events",
   seeAll: "See all our events",

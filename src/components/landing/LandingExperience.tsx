@@ -12,16 +12,15 @@ import { DonateBand } from "@/components/landing/DonateBand";
 import { AboutSection } from "@/components/landing/AboutSection";
 import { CtaCard } from "@/components/landing/CtaCard";
 import { UpcomingEvents } from "@/components/landing/UpcomingEvents";
-import {
-  EVENT_1_VIDEO,
-  EVENT_2_VIDEO,
-  EVENT_3_VIDEO,
-  EVENT_4_VIDEO,
-  WOUNDED_WARRIORS_VIDEO,
-} from "@/lib/media";
 import { prefetchVideo } from "@/lib/prefetchVideo";
+import type { SiteContent } from "@/lib/cms/queries";
 
-export function LandingExperience() {
+type LandingExperienceProps = {
+  /** Copy and events loaded from the database by the page above. */
+  content: SiteContent;
+};
+
+export function LandingExperience({ content }: LandingExperienceProps) {
   const [heroStartAt, setHeroStartAt] = useState(0);
   const [heroActive, setHeroActive] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
@@ -33,29 +32,39 @@ export function LandingExperience() {
           onComplete={(t) => {
             setHeroStartAt(t);
             setHeroActive(true);
-            // Hero has the network; start warming event tile videos for the rail below
-            prefetchVideo(WOUNDED_WARRIORS_VIDEO);
-            prefetchVideo(EVENT_1_VIDEO);
-            prefetchVideo(EVENT_2_VIDEO);
-            prefetchVideo(EVENT_3_VIDEO);
-            prefetchVideo(EVENT_4_VIDEO);
+            // Hero has the network; start warming the videos the rail will
+            // actually render, whatever the client has published.
+            for (const event of content.pastEvents) {
+              if ("video" in event && event.video) {
+                prefetchVideo(event.video);
+              }
+            }
           }}
           onGone={() => setShowLoader(false)}
         />
       )}
       {/* Nav + menu chrome only after loader fully exits */}
-      {!showLoader && <SiteNav variant="landing" />}
+      {!showLoader && (
+        <SiteNav
+          variant="landing"
+          site={content.site}
+          donate={content.donate}
+        />
+      )}
       <main>
         <Hero startAt={heroStartAt} soundOn active={heroActive} />
-        <EventsRail />
-        <WhatWeAreSection />
-        <WhoWeServeSection />
-        <DonateBand />
-        <AboutSection />
-        <CtaCard />
-        <UpcomingEvents />
+        <EventsRail events={content.pastEvents} />
+        <WhatWeAreSection copy={content.whatWeAre} />
+        <WhoWeServeSection copy={content.whoWeServe} />
+        <DonateBand copy={content.donate} />
+        <AboutSection copy={content.about} />
+        <CtaCard copy={content.cta} />
+        <UpcomingEvents
+          events={content.upcomingEvents}
+          copy={content.upcomingCopy}
+        />
       </main>
-      <SiteFooter />
+      <SiteFooter site={content.site} />
     </div>
   );
 }

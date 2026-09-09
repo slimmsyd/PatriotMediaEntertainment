@@ -6,12 +6,17 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Draggable } from "gsap/Draggable";
 import { useGSAP } from "@gsap/react";
-import { events } from "@/lib/content-defaults";
+import { events as defaultEvents, type PastEvent } from "@/lib/content-defaults";
 import { InViewVideo } from "@/components/ui/InViewVideo";
 
 gsap.registerPlugin(ScrollTrigger, Draggable, useGSAP);
 
-export function EventsRail() {
+type EventsRailProps = {
+  /** Past events from the database; falls back to the shipped rail. */
+  events?: readonly PastEvent[];
+};
+
+export function EventsRail({ events = defaultEvents }: EventsRailProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);

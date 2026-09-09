@@ -1,11 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { footerColumns, site } from "@/lib/content-defaults";
+import { footerColumns, site as defaultSite } from "@/lib/content-defaults";
+import type { SiteCopyValue } from "@/lib/cms/schemas";
 import { InstagramIcon, YouTubeIcon } from "@/components/ui/icons";
 import { openDonate } from "@/components/donate/openDonate";
 
-export function SiteFooter() {
+type SiteFooterProps = {
+  site?: SiteCopyValue;
+};
+
+export function SiteFooter({ site = defaultSite }: SiteFooterProps) {
   return (
     <footer className="relative z-[4] bg-off-white text-near-black px-[clamp(24px,4vw,72px)] pt-[clamp(48px,8vh,96px)] pb-[clamp(90px,12vh,120px)]">
       <div className="grid gap-[clamp(32px,4vw,72px)] min-[900px]:grid-cols-[minmax(300px,1.35fr)_repeat(3,minmax(150px,0.75fr))]">

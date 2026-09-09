@@ -2,8 +2,13 @@
 
 import { DonateButton } from "@/components/donate/DonateButton";
 import { donate } from "@/lib/content-defaults";
+import type { DonateCopyValue } from "@/lib/cms/schemas";
 
-export function DonateBand() {
+type DonateBandProps = {
+  copy?: DonateCopyValue;
+};
+
+export function DonateBand({ copy = donate }: DonateBandProps) {
   return (
     <section
       id="donate"
@@ -19,10 +24,10 @@ export function DonateBand() {
             id="donate-heading"
             className="mt-3 mb-0 text-[clamp(17px,1.4vw,20px)] leading-[1.5] text-pretty"
           >
-            {donate.blurb}
+            {copy.blurb}
           </p>
         </div>
-        <DonateButton className="h-[50px] px-[26px] text-[13px] tracking-[0.16em] uppercase" />
+        <DonateButton copy={copy} className="h-[50px] px-[26px] text-[13px] tracking-[0.16em] uppercase" />
       </div>
     </section>
   );

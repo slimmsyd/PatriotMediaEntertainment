@@ -5,7 +5,12 @@ import Image from "next/image";
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { upcomingCopy, upcomingEvents, type UpcomingEvent } from "@/lib/content-defaults";
+import {
+  upcomingCopy as defaultUpcomingCopy,
+  upcomingEvents as defaultUpcomingEvents,
+  type UpcomingEvent,
+} from "@/lib/content-defaults";
+import type { UpcomingCopyValue } from "@/lib/cms/schemas";
 import { ChevronRightIcon } from "@/components/ui/icons";
 import { StepEyebrow } from "@/components/ui/StepEyebrow";
 
@@ -21,7 +26,15 @@ const LOOP_DURATION = 28;
  */
 const MARQUEE_MIN_CARDS = 4;
 
-export function UpcomingEvents() {
+type UpcomingEventsProps = {
+  events?: readonly UpcomingEvent[];
+  copy?: UpcomingCopyValue;
+};
+
+export function UpcomingEvents({
+  events = defaultUpcomingEvents,
+  copy = defaultUpcomingCopy,
+}: UpcomingEventsProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLUListElement>(null);
@@ -38,7 +51,7 @@ export function UpcomingEvents() {
       ).matches;
       if (reduce) return;
 
-      if (upcomingEvents.length < MARQUEE_MIN_CARDS) return;
+      if (events.length < MARQUEE_MIN_CARDS) return;
 
       const setup = () => {
         tweenRef.current?.kill();
@@ -87,13 +100,13 @@ export function UpcomingEvents() {
   );
 
   // No real dates on the books yet — hide the section rather than run an
-  // empty marquee. It comes back on its own once upcomingEvents is populated.
-  if (upcomingEvents.length === 0) return null;
+  // empty marquee. It comes back on its own once events is populated.
+  if (events.length === 0) return null;
 
-  const marquee = upcomingEvents.length >= MARQUEE_MIN_CARDS;
+  const marquee = events.length >= MARQUEE_MIN_CARDS;
 
   const loopItems = Array.from({ length: marquee ? LOOP_SETS : 1 }, (_, setIndex) =>
-    upcomingEvents.map((event, index) => ({
+    events.map((event, index) => ({
       event,
       index,
       key: `${event.id}-set-${setIndex}`,
@@ -112,20 +125,20 @@ export function UpcomingEvents() {
       {/* Header stays padded; marquee can bleed full width */}
       <div className="mb-[clamp(36px,5vh,56px)] flex flex-col gap-8 px-[clamp(24px,4vw,72px)] min-[900px]:flex-row min-[900px]:items-end min-[900px]:justify-between">
         <div className="flex max-w-[18ch] flex-col gap-5 min-[900px]:max-w-none">
-          <StepEyebrow label={upcomingCopy.eyebrow} />
+          <StepEyebrow label={copy.eyebrow} />
           <h2
             id="upcoming-heading"
             className="m-0 text-[clamp(32px,4.2vw,52px)] font-semibold leading-[1.08] tracking-[-0.025em] text-pretty"
           >
-            {upcomingCopy.title}
+            {copy.title}
           </h2>
         </div>
 
         <Link
-          href={upcomingCopy.seeAllHref}
+          href={copy.seeAllHref}
           className="group inline-flex shrink-0 items-center gap-3 self-start text-[13px] font-bold tracking-[0.08em] uppercase text-near-black pme-link-red pme-focus-ring min-[900px]:self-auto"
         >
-          {upcomingCopy.seeAll}
+          {copy.seeAll}
           <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line-light bg-white text-near-black transition-colors duration-200 group-hover:border-red group-hover:bg-red group-hover:text-white">
             <ChevronRightIcon />
           </span>
