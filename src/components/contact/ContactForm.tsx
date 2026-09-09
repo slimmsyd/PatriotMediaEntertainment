@@ -9,7 +9,7 @@ import {
   type FormEvent,
   type KeyboardEvent,
 } from "react";
-import { contactSubjects, site } from "@/lib/content";
+import { contactSubjects, site } from "@/lib/content-defaults";
 import { CheckIcon, PaperPlaneIcon } from "@/components/ui/icons";
 
 const MAX_MESSAGE = 348;

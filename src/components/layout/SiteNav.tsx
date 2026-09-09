@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { navLinks, site } from "@/lib/content";
+import { navLinks, site } from "@/lib/content-defaults";
 import { ChipButton } from "@/components/ui/ChipButton";
 import { DonateButton } from "@/components/donate/DonateButton";
 import { CloseIcon } from "@/components/ui/icons";

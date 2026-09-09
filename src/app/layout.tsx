@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo } from "next/font/google";
-import { site } from "@/lib/content";
+import { site } from "@/lib/content-defaults";
 import "./globals.css";
 
 const archivo = Archivo({

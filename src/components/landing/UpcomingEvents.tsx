@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { upcomingCopy, upcomingEvents, type UpcomingEvent } from "@/lib/content";
+import { upcomingCopy, upcomingEvents, type UpcomingEvent } from "@/lib/content-defaults";
 import { ChevronRightIcon } from "@/components/ui/icons";
 import { StepEyebrow } from "@/components/ui/StepEyebrow";
 

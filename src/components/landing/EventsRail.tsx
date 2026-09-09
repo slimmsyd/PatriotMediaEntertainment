@@ -6,7 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Draggable } from "gsap/Draggable";
 import { useGSAP } from "@gsap/react";
-import { events } from "@/lib/content";
+import { events } from "@/lib/content-defaults";
 import { InViewVideo } from "@/components/ui/InViewVideo";
 
 gsap.registerPlugin(ScrollTrigger, Draggable, useGSAP);

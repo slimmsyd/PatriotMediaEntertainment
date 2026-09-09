@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { aboutCopy } from "@/lib/content";
+import { aboutCopy } from "@/lib/content-defaults";
 
 export function AboutSection() {
   return (

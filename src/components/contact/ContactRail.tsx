@@ -1,4 +1,4 @@
-import { site } from "@/lib/content";
+import { site } from "@/lib/content-defaults";
 import { PinIcon } from "@/components/ui/icons";
 
 export function ContactRail() {

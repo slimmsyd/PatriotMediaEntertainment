@@ -1,7 +1,7 @@
 "use client";
 
 import { ChipButton } from "@/components/ui/ChipButton";
-import { donate } from "@/lib/content";
+import { donate } from "@/lib/content-defaults";
 import { openDonate } from "./openDonate";
 
 type DonateButtonProps = {

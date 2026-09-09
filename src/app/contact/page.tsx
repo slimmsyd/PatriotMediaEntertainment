@@ -5,7 +5,7 @@ import { ContactForm } from "@/components/contact/ContactForm";
 import { ContactRail } from "@/components/contact/ContactRail";
 import { StepEyebrow } from "@/components/ui/StepEyebrow";
 import { TricolorBar } from "@/components/ui/TricolorBar";
-import { site } from "@/lib/content";
+import { site } from "@/lib/content-defaults";
 
 export const metadata: Metadata = {
   title: "Contact",

@@ -1,7 +1,7 @@
 "use client";
 
 import { DonateButton } from "@/components/donate/DonateButton";
-import { donate } from "@/lib/content";
+import { donate } from "@/lib/content-defaults";
 
 export function DonateBand() {
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { whatWeAreCopy } from "@/lib/content";
+import { whatWeAreCopy } from "@/lib/content-defaults";
 import { TricolorBar } from "@/components/ui/TricolorBar";
 
 export function WhatWeAreSection() {

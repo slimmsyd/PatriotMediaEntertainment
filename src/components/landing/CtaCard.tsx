@@ -5,7 +5,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { ctaCopy, partnerLogos } from "@/lib/content";
+import { ctaCopy, partnerLogos } from "@/lib/content-defaults";
 import { FLAG_BG_VIDEO, FLAG_POSTER } from "@/lib/media";
 import { ChevronRightIcon } from "@/components/ui/icons";
 import { TricolorBar } from "@/components/ui/TricolorBar";

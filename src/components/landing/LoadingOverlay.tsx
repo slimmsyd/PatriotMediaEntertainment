@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { site } from "@/lib/content";
+import { site } from "@/lib/content-defaults";
 import { LOADER_BG_VIDEO, SITE_BG_VIDEO } from "@/lib/media";
 
 gsap.registerPlugin(useGSAP);

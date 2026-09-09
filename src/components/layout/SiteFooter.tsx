@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { footerColumns, site } from "@/lib/content";
+import { footerColumns, site } from "@/lib/content-defaults";
 import { InstagramIcon, YouTubeIcon } from "@/components/ui/icons";
 import { openDonate } from "@/components/donate/openDonate";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { whoWeServeCopy, serviceTypes } from "@/lib/content";
+import { whoWeServeCopy, serviceTypes } from "@/lib/content-defaults";
 
 export function WhoWeServeSection() {
   return (
