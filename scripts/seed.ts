@@ -69,7 +69,7 @@ async function main() {
 
   type SeedRow = typeof events.$inferInsert;
   const rows: SeedRow[] = [];
-  let skipped: string[] = [];
+  const skipped: string[] = [];
   let order = 0;
 
   for (const event of defaults.events) {
