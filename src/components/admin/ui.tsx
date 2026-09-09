@@ -84,9 +84,11 @@ export function SecondaryLink({
   return (
     <Link
       href={href}
-      className="rounded-full border border-white/20 px-5 py-2.5 text-[13px] text-white/75 transition hover:border-white/45 hover:text-white"
+      className="group rounded-full border border-white/20 px-5 py-2.5 transition hover:border-white/45"
     >
-      {children}
+      <span className="text-[13px] text-white/75 transition group-hover:text-white">
+        {children}
+      </span>
     </Link>
   );
 }

@@ -75,9 +75,11 @@ function EventCard({
         </form>
         <Link
           href={`/admin/events/${event.id}`}
-          className="rounded-full border border-white/20 px-4 py-2 text-[13px] text-white/80 transition hover:border-white/45 hover:text-white"
+          className="group rounded-full border border-white/20 px-4 py-2 transition hover:border-white/45"
         >
-          Edit
+          <span className="text-[13px] text-white/80 transition group-hover:text-white">
+            Edit
+          </span>
         </Link>
         <details className="relative">
           <summary className="cursor-pointer list-none rounded-full border border-white/10 px-4 py-2 text-[13px] text-white/45 transition hover:border-[#ff8080]/50 hover:text-[#ff8080]">
@@ -167,9 +169,14 @@ export default async function AdminEventsPage({
         action={
           <Link
             href="/admin/events/new"
-            className="rounded-full bg-white px-6 py-3 text-[13px] font-medium tracking-[0.08em] text-black uppercase transition hover:bg-white/85"
+            className="rounded-full bg-white px-6 py-3 transition hover:bg-white/85"
           >
-            Add event
+            {/* globals.css sets `a { color: inherit }` unlayered, which beats
+                Tailwind's layered utilities — so the colour goes on a span,
+                the same way ChipButton does it. */}
+            <span className="text-[13px] font-medium tracking-[0.08em] text-black uppercase">
+              Add event
+            </span>
           </Link>
         }
       />

@@ -154,11 +154,10 @@ export function EventForm({ event }: { event?: EventRow }) {
 
       <div className="flex flex-wrap items-center gap-4 border-t border-white/10 pt-6">
         <SubmitButton isNew={isNew} />
-        <Link
-          href="/admin/events"
-          className="text-[13px] text-white/55 transition hover:text-white"
-        >
-          Cancel
+        <Link href="/admin/events" className="group">
+          <span className="text-[13px] text-white/55 transition group-hover:text-white">
+            Cancel
+          </span>
         </Link>
       </div>
     </form>

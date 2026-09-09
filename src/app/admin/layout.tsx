@@ -22,21 +22,26 @@ export default async function AdminLayout({
       {session && (
         <header className="sticky top-0 z-20 border-b border-white/10 bg-black/90 backdrop-blur">
           <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-3 px-6 py-4">
-            <Link
-              href="/admin/events"
-              className="text-[11px] font-medium tracking-[0.18em] text-white uppercase"
-            >
-              Patriot Admin
+            <Link href="/admin/events">
+              <span className="text-[11px] font-medium tracking-[0.18em] text-white uppercase">
+                Patriot Admin
+              </span>
             </Link>
-            <nav className="flex items-center gap-5 text-[13px] text-white/70">
-              <Link className="hover:text-white" href="/admin/events">
-                Events
-              </Link>
-              <Link className="hover:text-white" href="/admin/copy">
-                Text
-              </Link>
-              <Link className="hover:text-white" href="/" target="_blank">
-                View site ↗
+            <nav className="flex items-center gap-5">
+              {[
+                { href: "/admin/events", label: "Events" },
+                { href: "/admin/copy", label: "Text" },
+              ].map((link) => (
+                <Link key={link.href} href={link.href} className="group">
+                  <span className="text-[13px] text-white/70 transition group-hover:text-white">
+                    {link.label}
+                  </span>
+                </Link>
+              ))}
+              <Link href="/" target="_blank" className="group">
+                <span className="text-[13px] text-white/70 transition group-hover:text-white">
+                  View site ↗
+                </span>
               </Link>
             </nav>
             <form action={logout} className="ml-auto">
